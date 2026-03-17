@@ -1,20 +1,18 @@
 {
-	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "bescuit-costtracker",
-	"compatibility_date": "2025-09-02",
-	"compatibility_flags": [
-		"nodejs_compat"
-	],
-	"main": "@tanstack/react-start/server-entry",
-	"d1_databases": [
-		{
-			"binding": "DB",
-			"database_name": "costtracker-db",
-			"database_id": "2d9758b0-7d05-4df9-af74-2d1bd4cadfe8",
-			"migrations_dir": "drizzle/migrations",
-		},
-	],
-	"vars": {
-		"ENVIRONMENT": "production",
-	},
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "bescuit-costtracker",
+  "compatibility_date": "2025-09-02",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "@tanstack/react-start/server-entry",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "costtracker-db",
+      "database_id": "2d9758b0-7d05-4df9-af74-2d1bd4cadfe8",
+      "migrations_dir": "drizzle/migrations",
+    },
+  ],
+  "vars": {
+    "ENVIRONMENT": "production",
+  },
 }
