@@ -11,20 +11,27 @@ Cloudflare-native web app for tracking bar-restaurante purchasing costs from pas
 
 ## Phase 1 status
 
-Phase 1 is implemented:
+Phase 1 is verified and ready for Phase 2:
 
 - TanStack Start app scaffolded
 - Cloudflare Worker and D1 binding configured
 - Drizzle schema and initial migration generated
 - Base category seed included in the first migration
 - App shell, top bar, bottom nav, and route skeleton pages added
+- Vitest isolated from the Cloudflare worker runner
+- Minimal regression tests cover utilities, navigation shell, and default categories
+- Local D1 migration plus seeded categories verified before handoff
 
 ## Development
 
 ```bash
 pnpm install
+pnpm cf:typegen
+pnpm db:migrate:local
 pnpm dev
 ```
+
+`pnpm cf:typegen` refreshes the checked-in `worker-configuration.d.ts` runtime bindings from `wrangler.jsonc`.
 
 ## Database
 
@@ -38,6 +45,13 @@ Apply local D1 migrations:
 
 ```bash
 pnpm db:migrate:local
+```
+
+Verify the local schema and seed data:
+
+```bash
+pnpm exec wrangler d1 execute costtracker-db --local --command "SELECT name FROM sqlite_master WHERE type='table' AND name IN ('suppliers', 'categories', 'invoices', 'invoice_items') ORDER BY name"
+pnpm exec wrangler d1 execute costtracker-db --local --command "SELECT name, sort_order FROM categories ORDER BY sort_order, name"
 ```
 
 Apply remote D1 migrations:
@@ -54,8 +68,8 @@ Important:
 ## Quality checks
 
 ```bash
-pnpm check
 pnpm build
+pnpm exec eslint .
 pnpm test
 ```
 

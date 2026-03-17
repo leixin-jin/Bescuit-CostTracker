@@ -7,7 +7,7 @@ import {
   text,
 } from 'drizzle-orm/sqlite-core'
 
-const now = sql`datetime('now')`
+const now = sql`(datetime('now'))`
 
 export const suppliers = sqliteTable('suppliers', {
   id: text('id')

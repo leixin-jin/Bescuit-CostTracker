@@ -42,7 +42,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "datetime('now')"
+          "default": "(datetime('now'))"
         }
       },
       "indexes": {
@@ -145,7 +145,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "datetime('now')"
+          "default": "(datetime('now'))"
         }
       },
       "indexes": {
@@ -269,7 +269,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "datetime('now')"
+          "default": "(datetime('now'))"
         },
         "updated_at": {
           "name": "updated_at",
@@ -277,7 +277,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "datetime('now')"
+          "default": "(datetime('now'))"
         }
       },
       "indexes": {
@@ -344,7 +344,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "datetime('now')"
+          "default": "(datetime('now'))"
         },
         "updated_at": {
           "name": "updated_at",
@@ -352,7 +352,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "datetime('now')"
+          "default": "(datetime('now'))"
         }
       },
       "indexes": {

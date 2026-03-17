@@ -4,6 +4,7 @@
 
 ## 当前状态
 
+- Phase 1 退出 checklist 需要先全部通过：`pnpm build`、`pnpm exec eslint .`、`pnpm test`、本地 D1 migration 与 11 个默认分类验证完成后，才进入本阶段。
 - `src/routes/upload.tsx` 已明确下一步要做 textarea 解析、Zod 校验、可编辑预览和保存流程。
 - `src/routes/invoices/index.tsx` 与 `src/routes/invoices/$invoiceId.tsx` 已具备页面框架，但仍使用静态假数据。
 - `src/routes/suppliers/index.tsx` 已有供应商目录界面骨架，但尚未从 D1 读取真实数据。

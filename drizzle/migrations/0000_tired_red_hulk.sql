@@ -3,7 +3,7 @@ CREATE TABLE `categories` (
 	`name` text NOT NULL,
 	`icon` text,
 	`sort_order` integer DEFAULT 0 NOT NULL,
-	`created_at` text DEFAULT datetime('now') NOT NULL
+	`created_at` text DEFAULT (datetime('now')) NOT NULL
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `categories_name_unique` ON `categories` (`name`);--> statement-breakpoint
@@ -19,7 +19,7 @@ CREATE TABLE `invoice_items` (
 	`tax_rate` real DEFAULT 0.1 NOT NULL,
 	`total_price` real NOT NULL,
 	`item_date` text NOT NULL,
-	`created_at` text DEFAULT datetime('now') NOT NULL,
+	`created_at` text DEFAULT (datetime('now')) NOT NULL,
 	FOREIGN KEY (`invoice_id`) REFERENCES `invoices`(`id`) ON UPDATE no action ON DELETE cascade,
 	FOREIGN KEY (`supplier_id`) REFERENCES `suppliers`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`category_id`) REFERENCES `categories`(`id`) ON UPDATE no action ON DELETE no action
@@ -38,8 +38,8 @@ CREATE TABLE `invoices` (
 	`status` text DEFAULT 'verified' NOT NULL,
 	`notes` text,
 	`raw_json` text,
-	`created_at` text DEFAULT datetime('now') NOT NULL,
-	`updated_at` text DEFAULT datetime('now') NOT NULL,
+	`created_at` text DEFAULT (datetime('now')) NOT NULL,
+	`updated_at` text DEFAULT (datetime('now')) NOT NULL,
 	FOREIGN KEY (`supplier_id`) REFERENCES `suppliers`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
@@ -50,8 +50,8 @@ CREATE TABLE `suppliers` (
 	`name` text NOT NULL,
 	`contact` text,
 	`notes` text,
-	`created_at` text DEFAULT datetime('now') NOT NULL,
-	`updated_at` text DEFAULT datetime('now') NOT NULL
+	`created_at` text DEFAULT (datetime('now')) NOT NULL,
+	`updated_at` text DEFAULT (datetime('now')) NOT NULL
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `suppliers_name_unique` ON `suppliers` (`name`);

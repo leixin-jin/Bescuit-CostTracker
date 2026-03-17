@@ -18,8 +18,9 @@ const metrics = [
   },
   {
     label: 'Current milestone',
-    value: 'Phase 1',
-    copy: 'Foundation complete: app shell, navigation, Cloudflare config, and migrations.',
+    value: 'Phase 1 verified',
+    copy:
+      'Build, lint, tests, local D1 migration, and seed checks now gate the move into Phase 2.',
   },
 ] as const
 
@@ -28,13 +29,15 @@ const foundationChecklist = [
   'Wrangler configured for Cloudflare Workers plus D1 binding and migrations folder.',
   'Drizzle schema mirrors the planning document and includes invoice-friendly indexes.',
   'Global layout now behaves like a focused operations dashboard on desktop and mobile.',
+  'Vitest now runs outside the Cloudflare worker runner and protects the baseline shell.',
+  'Local D1 migration plus the 11 default categories have been verified before Phase 2.',
 ] as const
 
 const nextSteps = [
   {
     title: 'Phase 2: paste JSON',
     detail:
-      'Add Zod validation, parse preview, inline editing, and invoice save flow.',
+      'Add Zod validation, parse preview, inline editing, and invoice save flow on top of the verified Phase 1 baseline.',
   },
   {
     title: 'Phase 3: analytics',
@@ -61,10 +64,11 @@ function DashboardPage() {
               Invoice-ready architecture for a bar-restaurante cost tracker.
             </h2>
             <p className="page-copy">
-              The app foundation is now aligned to the project plan: Cloudflare
-              worker runtime, D1-ready schema, Drizzle migrations, and route
-              scaffolding for upload, analytics, invoice history, supplier
-              management, and comparison flows.
+              The app foundation is now verified against the Phase 1 gate:
+              Cloudflare worker runtime, D1-ready schema, Drizzle migrations,
+              route scaffolding, a passing test baseline, and reproducible local
+              database setup for the upload, analytics, invoice history,
+              supplier management, and comparison flows.
             </p>
           </div>
 
