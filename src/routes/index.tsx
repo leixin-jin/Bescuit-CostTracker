@@ -1,4 +1,5 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
+import { defaultInvoiceSearch } from '../features/invoices/schema'
 
 const metrics = [
   {
@@ -78,7 +79,11 @@ function DashboardPage() {
               <Link to="/upload" className="button">
                 Open upload flow
               </Link>
-              <Link to="/invoices/" className="button button-secondary">
+              <Link
+                to="/invoices"
+                search={defaultInvoiceSearch}
+                className="button button-secondary"
+              >
                 Review invoice shell
               </Link>
             </div>

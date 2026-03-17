@@ -6,6 +6,7 @@ import { BottomNav } from './BottomNav'
 type MockLinkProps = {
   children?: ReactNode
   className?: string
+  search?: unknown
   to: string
 }
 

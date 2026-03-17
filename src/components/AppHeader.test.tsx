@@ -6,6 +6,7 @@ import { AppHeader } from './AppHeader'
 type MockLinkProps = {
   children?: ReactNode
   className?: string
+  search?: unknown
   to: string
 }
 
@@ -36,10 +37,10 @@ describe('AppHeader', () => {
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
       '/',
       '/upload',
-      '/invoices/',
+      '/invoices',
       '/analytics',
       '/compare',
-      '/suppliers/',
+      '/suppliers',
     ])
   })
 })

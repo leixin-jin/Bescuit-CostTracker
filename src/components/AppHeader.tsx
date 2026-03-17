@@ -1,13 +1,19 @@
 import { Link } from '@tanstack/react-router'
+import { defaultInvoiceSearch } from '../features/invoices/schema'
 
-const navigation = [
+const navigation: Array<{
+  to: '/' | '/upload' | '/invoices' | '/analytics' | '/compare' | '/suppliers'
+  label: string
+  exact?: boolean
+  search?: typeof defaultInvoiceSearch
+}> = [
   { to: '/', label: 'Dashboard', exact: true },
   { to: '/upload', label: 'Upload' },
-  { to: '/invoices/', label: 'Invoices' },
+  { to: '/invoices', label: 'Invoices', search: defaultInvoiceSearch },
   { to: '/analytics', label: 'Analytics' },
   { to: '/compare', label: 'Compare' },
-  { to: '/suppliers/', label: 'Suppliers' },
-] as const
+  { to: '/suppliers', label: 'Suppliers' },
+]
 
 export function AppHeader() {
   return (
@@ -30,6 +36,7 @@ export function AppHeader() {
             <Link
               key={item.to}
               to={item.to}
+              search={item.search}
               activeOptions={{ exact: item.exact }}
               className="nav-chip"
               activeProps={{ className: 'is-active' }}

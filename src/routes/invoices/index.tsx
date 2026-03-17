@@ -1,50 +1,29 @@
-import { Link, createFileRoute } from '@tanstack/react-router'
+import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
 import { formatCurrency, formatShortDate } from '../../lib/utils'
+import { listInvoicesQuery } from '../../features/invoices/invoice.functions'
+import { invoiceSearchSchema } from '../../features/invoices/schema'
 
-const plannedInvoices = [
-  {
-    id: 'makro-2026-03-16',
-    supplier: 'Makro',
-    number: 'ALB-2026-0342',
-    date: '2026-03-16',
-    total: 63.25,
-    items: 2,
-    status: 'verified',
-  },
-  {
-    id: 'mercabarna-2026-03-12',
-    supplier: 'Mercabarna',
-    number: 'FC-200184',
-    date: '2026-03-12',
-    total: 186.4,
-    items: 7,
-    status: 'draft',
-  },
-  {
-    id: 'carnes-sur-2026-03-09',
-    supplier: 'Carnes Sur',
-    number: 'CS-9918',
-    date: '2026-03-09',
-    total: 94.7,
-    items: 4,
-    status: 'verified',
-  },
-] as const
-
-export const Route = createFileRoute('/invoices/')({ component: InvoicesPage })
+export const Route = createFileRoute('/invoices/')({
+  validateSearch: (search) => invoiceSearchSchema.parse(search),
+  loaderDeps: ({ search }) => search,
+  loader: ({ deps }) => listInvoicesQuery({ data: deps }),
+  component: InvoicesPage,
+})
 
 function InvoicesPage() {
+  const navigate = useNavigate({ from: Route.fullPath })
+  const search = Route.useSearch()
+  const invoices = Route.useLoaderData()
+
   return (
     <div className="page-shell page-fade">
       <section className="surface-panel hero-panel">
         <p className="eyebrow">Invoice registry</p>
-        <h2 className="page-title">
-          List, filter, and inspect every saved delivery note.
-        </h2>
+        <h2 className="page-title">List, filter, and inspect every saved invoice.</h2>
         <p className="page-copy">
-          This page is ready for server-driven filtering once phase 2 starts
-          writing invoices into D1. The dynamic detail route is already in place
-          for individual record review.
+          The registry now reads directly from D1, supports keyword lookup
+          across suppliers, numbers, and products, and keeps draft invoices
+          visible until they are verified.
         </p>
       </section>
 
@@ -57,16 +36,36 @@ function InvoicesPage() {
                 id="invoice-search"
                 className="text-input"
                 placeholder="Proveedor, numero, producto..."
-                disabled
+                value={search.query}
+                onChange={(event) =>
+                  navigate({
+                    search: (previous) => ({
+                      ...previous,
+                      query: event.target.value,
+                    }),
+                  })
+                }
               />
             </div>
+
             <div className="field">
               <label htmlFor="invoice-filter">Status</label>
               <select
                 id="invoice-filter"
                 className="select-input"
-                disabled
-                defaultValue="all"
+                value={search.status}
+                onChange={(event) =>
+                  navigate({
+                    search: (previous) => ({
+                      ...previous,
+                      status:
+                        event.target.value === 'draft' ||
+                        event.target.value === 'verified'
+                          ? event.target.value
+                          : 'all',
+                    }),
+                  })
+                }
               >
                 <option value="all">All</option>
                 <option value="verified">Verified</option>
@@ -75,66 +74,92 @@ function InvoicesPage() {
             </div>
           </div>
 
-          <div className="table-shell" style={{ marginTop: '1rem' }}>
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Invoice</th>
-                  <th>Supplier</th>
-                  <th>Date</th>
-                  <th>Items</th>
-                  <th>Total</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {plannedInvoices.map((invoice) => (
-                  <tr key={invoice.id}>
-                    <td>
-                      <Link
-                        to="/invoices/$invoiceId"
-                        params={{ invoiceId: invoice.id }}
-                        className="inline-link"
-                      >
-                        {invoice.number}
-                      </Link>
-                    </td>
-                    <td>{invoice.supplier}</td>
-                    <td>{formatShortDate(invoice.date)}</td>
-                    <td>{invoice.items}</td>
-                    <td>{formatCurrency(invoice.total)}</td>
-                    <td>
-                      <span
-                        className={`badge ${
-                          invoice.status === 'verified'
-                            ? 'badge-success'
-                            : 'badge-warning'
-                        }`}
-                      >
-                        {invoice.status}
-                      </span>
-                    </td>
+          {invoices.length > 0 ? (
+            <div className="table-shell" style={{ marginTop: '1rem' }}>
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>Invoice</th>
+                    <th>Supplier</th>
+                    <th>Date</th>
+                    <th>Items</th>
+                    <th>Total</th>
+                    <th>Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {invoices.map((invoice) => (
+                    <tr key={invoice.id}>
+                      <td>
+                        <Link
+                          to="/invoices/$invoiceId"
+                          params={{ invoiceId: invoice.id }}
+                          className="inline-link"
+                        >
+                          {invoice.invoiceNumber || 'Sin numero'}
+                        </Link>
+                      </td>
+                      <td>{invoice.supplierName}</td>
+                      <td>{formatShortDate(invoice.invoiceDate)}</td>
+                      <td>{invoice.itemCount}</td>
+                      <td>{formatCurrency(invoice.totalAmount)}</td>
+                      <td>
+                        <span
+                          className={`badge ${
+                            invoice.status === 'verified'
+                              ? 'badge-success'
+                              : 'badge-warning'
+                          }`}
+                        >
+                          {invoice.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="empty-state">
+              <div className="empty-state__icon">0</div>
+              <div>
+                <h3 className="section-heading">No invoices match the current filter</h3>
+                <p className="section-copy">
+                  Adjust the search, clear the status filter, or import a new
+                  invoice to populate the registry.
+                </p>
+              </div>
+              <Link to="/upload" className="button">
+                Import invoice
+              </Link>
+            </div>
+          )}
         </article>
 
         <article className="surface-panel section-card surface-muted">
-          <p className="eyebrow">Ready for wiring</p>
-          <h3 className="section-heading">Next behaviors</h3>
+          <p className="eyebrow">Live summary</p>
+          <h3 className="section-heading">Current registry window</h3>
           <ul className="stack-list" style={{ marginTop: '1rem' }}>
             <li className="stack-item">
-              <span>Server-side date and supplier ordering</span>
+              <span>Visible invoices</span>
+              <span className="stack-item__value">{invoices.length}</span>
             </li>
             <li className="stack-item">
-              <span>
-                Search by invoice number, supplier, or product keyword
+              <span>Draft count</span>
+              <span className="stack-item__value">
+                {invoices.filter((invoice) => invoice.status === 'draft').length}
               </span>
             </li>
             <li className="stack-item">
-              <span>Detail page edit and delete actions</span>
+              <span>Window total</span>
+              <span className="stack-item__value">
+                {formatCurrency(
+                  invoices.reduce(
+                    (sum, invoice) => sum + invoice.totalAmount,
+                    0,
+                  ),
+                )}
+              </span>
             </li>
           </ul>
         </article>
