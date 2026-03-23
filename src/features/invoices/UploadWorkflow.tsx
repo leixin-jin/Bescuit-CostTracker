@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
+import { EmptyStateCard } from '../../components/AppStates'
 import { InvoiceEditor } from './InvoiceEditor'
 import {
   formatIssuePath,
@@ -214,7 +215,15 @@ export function UploadWorkflow({
             onChange={setDraft}
           />
         </section>
-      ) : null}
+      ) : (
+        <section className="surface-panel section-card surface-muted">
+          <EmptyStateCard
+            icon="1"
+            title="Invoice preview will appear here"
+            copy="Load the sample payload or paste a supplier JSON document, then run Parse preview to review the normalized draft."
+          />
+        </section>
+      )}
     </div>
   )
 }

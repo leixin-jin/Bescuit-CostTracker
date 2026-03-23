@@ -15,4 +15,21 @@
   "vars": {
     "ENVIRONMENT": "production",
   },
+  "env": {
+    "staging": {
+      "name": "bescuit-costtracker-staging",
+      "vars": {
+        "ENVIRONMENT": "staging",
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "costtracker-db-staging",
+          // Replace before the first staging deploy.
+          "database_id": "replace-with-staging-database-id",
+          "migrations_dir": "drizzle/migrations",
+        },
+      ],
+    },
+  },
 }

@@ -1,4 +1,5 @@
 import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
+import { EmptyStateCard } from '../../components/AppStates'
 import { formatCurrency, formatShortDate } from '../../lib/utils'
 import { listInvoicesQuery } from '../../features/invoices/invoice.functions'
 import { invoiceSearchSchema } from '../../features/invoices/schema'
@@ -76,7 +77,7 @@ function InvoicesPage() {
 
           {invoices.length > 0 ? (
             <div className="table-shell" style={{ marginTop: '1rem' }}>
-              <table className="data-table">
+              <table className="data-table data-table--responsive">
                 <thead>
                   <tr>
                     <th>Invoice</th>
@@ -90,7 +91,7 @@ function InvoicesPage() {
                 <tbody>
                   {invoices.map((invoice) => (
                     <tr key={invoice.id}>
-                      <td>
+                      <td data-label="Invoice">
                         <Link
                           to="/invoices/$invoiceId"
                           params={{ invoiceId: invoice.id }}
@@ -99,11 +100,11 @@ function InvoicesPage() {
                           {invoice.invoiceNumber || 'Sin numero'}
                         </Link>
                       </td>
-                      <td>{invoice.supplierName}</td>
-                      <td>{formatShortDate(invoice.invoiceDate)}</td>
-                      <td>{invoice.itemCount}</td>
-                      <td>{formatCurrency(invoice.totalAmount)}</td>
-                      <td>
+                      <td data-label="Supplier">{invoice.supplierName}</td>
+                      <td data-label="Date">{formatShortDate(invoice.invoiceDate)}</td>
+                      <td data-label="Items">{invoice.itemCount}</td>
+                      <td data-label="Total">{formatCurrency(invoice.totalAmount)}</td>
+                      <td data-label="Status">
                         <span
                           className={`badge ${
                             invoice.status === 'verified'
@@ -120,19 +121,15 @@ function InvoicesPage() {
               </table>
             </div>
           ) : (
-            <div className="empty-state">
-              <div className="empty-state__icon">0</div>
-              <div>
-                <h3 className="section-heading">No invoices match the current filter</h3>
-                <p className="section-copy">
-                  Adjust the search, clear the status filter, or import a new
-                  invoice to populate the registry.
-                </p>
-              </div>
-              <Link to="/upload" className="button">
-                Import invoice
-              </Link>
-            </div>
+            <EmptyStateCard
+              title="No invoices match the current filter"
+              copy="Adjust the search, clear the status filter, or import a new invoice to populate the registry."
+              action={
+                <Link to="/upload" className="button">
+                  Import invoice
+                </Link>
+              }
+            />
           )}
         </article>
 

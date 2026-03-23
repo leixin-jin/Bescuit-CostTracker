@@ -4,6 +4,7 @@ import type {
   DashboardMetrics,
   ProductSuggestion,
 } from './analytics.server'
+import { EmptyStateCard } from '../../components/AppStates'
 import {
   formatCurrency,
   formatFullDate,
@@ -270,28 +271,18 @@ export function AnalyticsPageContent({
                   ))}
                 </div>
               ) : (
-                <div className="empty-state">
-                  <div className="empty-state__icon">0</div>
-                  <div>
-                    <h3 className="section-heading">No samples in the selected window</h3>
-                    <p className="section-copy">
-                      Keep the product selected and widen the window, or import
-                      more invoices for this item.
-                    </p>
-                  </div>
-                </div>
+                <EmptyStateCard
+                  title="No samples in the selected window"
+                  copy="Keep the product selected and widen the window, or import more invoices for this item."
+                />
               )}
             </>
           ) : (
-            <div className="empty-state">
-              <div className="empty-state__icon">3</div>
-              <div>
-                <h3 className="section-heading">Choose a product to start</h3>
-                <p className="section-copy">
-                  Type at least two characters to fetch indexed product suggestions.
-                </p>
-              </div>
-            </div>
+            <EmptyStateCard
+              icon="3"
+              title="Choose a product to start"
+              copy="Type at least two characters to fetch indexed product suggestions."
+            />
           )}
         </article>
 
@@ -462,16 +453,10 @@ export function ComparePageContent({
               ))}
             </div>
           ) : (
-            <div className="empty-state">
-              <div className="empty-state__icon">0</div>
-              <div>
-                <h3 className="section-heading">No comparison rows match the filter</h3>
-                <p className="section-copy">
-                  Search for a product with at least two supplier samples, or
-                  import more invoices to create a benchmark.
-                </p>
-              </div>
-            </div>
+            <EmptyStateCard
+              title="No comparison rows match the filter"
+              copy="Search for a product with at least two supplier samples, or import more invoices to create a benchmark."
+            />
           )}
         </article>
 

@@ -6,6 +6,7 @@ import {
   useRouter,
 } from '@tanstack/react-router'
 import { useServerFn } from '@tanstack/react-start'
+import { PageNotice } from '../../components/AppStates'
 import { InvoiceEditor } from '../../features/invoices/InvoiceEditor'
 import {
   deleteInvoiceAction,
@@ -56,13 +57,11 @@ function InvoiceDetailPage() {
   if (!detail || !draft) {
     return (
       <div className="page-shell page-fade">
-        <section className="surface-panel hero-panel">
-          <p className="eyebrow">Invoice detail</p>
-          <h2 className="page-title">Invoice not found.</h2>
-          <p className="page-copy">
-            The record may have been deleted or the link is stale.
-          </p>
-          <div className="hero-actions" style={{ marginTop: '1rem' }}>
+        <PageNotice
+          eyebrow="Invoice detail"
+          title="Invoice not found."
+          copy="The record may have been deleted or the link is stale."
+          actions={
             <Link
               to="/invoices"
               search={defaultInvoiceSearch}
@@ -70,8 +69,8 @@ function InvoiceDetailPage() {
             >
               Back to invoices
             </Link>
-          </div>
-        </section>
+          }
+        />
       </div>
     )
   }

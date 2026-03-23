@@ -28,7 +28,7 @@ describe('AppHeader', () => {
         name: 'Bar purchasing control from invoice to insight',
       }),
     ).toBeTruthy()
-    expect(screen.getByText('Phase 3 live')).toBeTruthy()
+    expect(screen.getByText('Phase 4 ready')).toBeTruthy()
 
     const navigation = screen.getByRole('navigation', { name: 'Primary' })
     const links = within(navigation).getAllByRole('link')

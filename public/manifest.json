@@ -1,25 +1,32 @@
 {
+  "id": "/",
+  "lang": "es",
   "short_name": "CostTracker",
   "name": "Bescuit CostTracker",
+  "description": "Cloudflare-native purchasing tracker for invoice imports, supplier comparison, and price analytics.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "browser"],
+  "orientation": "portrait-primary",
+  "theme_color": "#f6f1e8",
+  "background_color": "#f6f1e8",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "/favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "/logo192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "/logo512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#e8652b",
-  "background_color": "#0f1117"
+  "prefer_related_applications": false
 }

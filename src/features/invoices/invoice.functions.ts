@@ -1,4 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
+import { observeServerOperation } from '../../lib/observability'
 import {
   deleteInvoiceInputSchema,
   invoiceIdInputSchema,
@@ -19,38 +20,82 @@ import {
 } from './invoice.server'
 
 export const getCategoryCatalog = createServerFn({ method: 'GET' }).handler(
-  async () => listCategoryCatalog(),
+  async () =>
+    observeServerOperation('catalog.list', {}, async () => listCategoryCatalog()),
 )
 
 export const saveImportedInvoiceAction = createServerFn({ method: 'POST' })
   .inputValidator(saveImportedInvoiceInputSchema)
-  .handler(async ({ data }) => saveImportedInvoice(data))
+  .handler(async ({ data }) =>
+    observeServerOperation(
+      'invoice.save',
+      {
+        supplierName: data.draft.supplierName,
+        itemCount: data.draft.items.length,
+      },
+      async () => saveImportedInvoice(data),
+    ),
+  )
 
 export const listInvoicesQuery = createServerFn({ method: 'GET' })
   .inputValidator(invoiceSearchSchema)
-  .handler(async ({ data }) => listInvoices(data))
+  .handler(async ({ data }) =>
+    observeServerOperation('invoice.list', data, async () => listInvoices(data)),
+  )
 
 export const getInvoiceDetailQuery = createServerFn({ method: 'GET' })
   .inputValidator(invoiceIdInputSchema)
-  .handler(async ({ data }) => getInvoiceDetail(data.invoiceId))
+  .handler(async ({ data }) =>
+    observeServerOperation(
+      'invoice.detail',
+      { invoiceId: data.invoiceId },
+      async () => getInvoiceDetail(data.invoiceId),
+    ),
+  )
 
 export const updateInvoiceAction = createServerFn({ method: 'POST' })
   .inputValidator(updateInvoiceInputSchema)
-  .handler(async ({ data }) => updateInvoiceById(data))
+  .handler(async ({ data }) =>
+    observeServerOperation(
+      'invoice.update',
+      {
+        invoiceId: data.invoiceId,
+        supplierName: data.draft.supplierName,
+        itemCount: data.draft.items.length,
+      },
+      async () => updateInvoiceById(data),
+    ),
+  )
 
 export const deleteInvoiceAction = createServerFn({ method: 'POST' })
   .inputValidator(deleteInvoiceInputSchema)
-  .handler(async ({ data }) => {
-    await deleteInvoiceById(data.invoiceId)
-    return { success: true }
-  })
+  .handler(async ({ data }) =>
+    observeServerOperation(
+      'invoice.delete',
+      { invoiceId: data.invoiceId },
+      async () => {
+        await deleteInvoiceById(data.invoiceId)
+        return { success: true }
+      },
+    ),
+  )
 
 export const listSuppliersQuery = createServerFn({ method: 'GET' }).handler(
-  async () => listSupplierDirectory(),
+  async () =>
+    observeServerOperation('supplier.list', {}, async () => listSupplierDirectory()),
 )
 
 export const upsertSupplierAction = createServerFn({ method: 'POST' })
   .inputValidator(supplierMutationSchema)
-  .handler(async ({ data }) => ({
-    supplierId: await upsertSupplierDetails(data),
-  }))
+  .handler(async ({ data }) =>
+    observeServerOperation(
+      'supplier.upsert',
+      {
+        supplierId: data.id ?? null,
+        supplierName: data.name,
+      },
+      async () => ({
+        supplierId: await upsertSupplierDetails(data),
+      }),
+    ),
+  )

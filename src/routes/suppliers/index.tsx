@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
-import { createFileRoute, useRouter } from '@tanstack/react-router'
+import { Link, createFileRoute, useRouter } from '@tanstack/react-router'
 import { useServerFn } from '@tanstack/react-start'
+import { EmptyStateCard } from '../../components/AppStates'
 import {
   listSuppliersQuery,
   upsertSupplierAction,
 } from '../../features/invoices/invoice.functions'
 import { formatCurrency, formatShortDate } from '../../lib/utils'
+import { defaultInvoiceSearch } from '../../features/invoices/schema'
 
 type SupplierFormState = {
   id?: string
@@ -208,98 +210,116 @@ function SuppliersPage() {
       </section>
 
       <section className="three-column-grid">
-        {records.map((supplier, index) => (
-          <article
-            key={supplier.id ?? `${supplier.name}-${index}`}
-            className="surface-panel section-card"
-          >
-            <div className="field">
-              <label htmlFor={`supplier-name-${supplier.id}`}>Supplier</label>
-              <input
-                id={`supplier-name-${supplier.id}`}
-                className="text-input"
-                value={supplier.name}
-                onChange={(event) =>
-                  setRecords((previous) =>
-                    previous.map((record) =>
-                      record.id === supplier.id
-                        ? { ...record, name: event.target.value }
-                        : record,
-                    ),
-                  )
-                }
-              />
-            </div>
+        {records.length > 0 ? (
+          records.map((supplier, index) => (
+            <article
+              key={supplier.id ?? `${supplier.name}-${index}`}
+              className="surface-panel section-card"
+            >
+              <div className="field">
+                <label htmlFor={`supplier-name-${supplier.id}`}>Supplier</label>
+                <input
+                  id={`supplier-name-${supplier.id}`}
+                  className="text-input"
+                  value={supplier.name}
+                  onChange={(event) =>
+                    setRecords((previous) =>
+                      previous.map((record) =>
+                        record.id === supplier.id
+                          ? { ...record, name: event.target.value }
+                          : record,
+                      ),
+                    )
+                  }
+                />
+              </div>
 
-            <div className="field">
-              <label htmlFor={`supplier-contact-${supplier.id}`}>Contact</label>
-              <input
-                id={`supplier-contact-${supplier.id}`}
-                className="text-input"
-                value={supplier.contact}
-                onChange={(event) =>
-                  setRecords((previous) =>
-                    previous.map((record) =>
-                      record.id === supplier.id
-                        ? { ...record, contact: event.target.value }
-                        : record,
-                    ),
-                  )
-                }
-              />
-            </div>
+              <div className="field">
+                <label htmlFor={`supplier-contact-${supplier.id}`}>Contact</label>
+                <input
+                  id={`supplier-contact-${supplier.id}`}
+                  className="text-input"
+                  value={supplier.contact}
+                  onChange={(event) =>
+                    setRecords((previous) =>
+                      previous.map((record) =>
+                        record.id === supplier.id
+                          ? { ...record, contact: event.target.value }
+                          : record,
+                      ),
+                    )
+                  }
+                />
+              </div>
 
-            <div className="field">
-              <label htmlFor={`supplier-notes-${supplier.id}`}>Notes</label>
-              <textarea
-                id={`supplier-notes-${supplier.id}`}
-                className="text-area text-area--compact"
-                value={supplier.notes}
-                onChange={(event) =>
-                  setRecords((previous) =>
-                    previous.map((record) =>
-                      record.id === supplier.id
-                        ? { ...record, notes: event.target.value }
-                        : record,
-                    ),
-                  )
-                }
-              />
-            </div>
+              <div className="field">
+                <label htmlFor={`supplier-notes-${supplier.id}`}>Notes</label>
+                <textarea
+                  id={`supplier-notes-${supplier.id}`}
+                  className="text-area text-area--compact"
+                  value={supplier.notes}
+                  onChange={(event) =>
+                    setRecords((previous) =>
+                      previous.map((record) =>
+                        record.id === supplier.id
+                          ? { ...record, notes: event.target.value }
+                          : record,
+                      ),
+                    )
+                  }
+                />
+              </div>
 
-            <ul className="stack-list" style={{ marginTop: '1rem' }}>
-              <li className="stack-item">
-                <span>Invoices</span>
-                <span className="stack-item__value">{supplier.invoiceCount}</span>
-              </li>
-              <li className="stack-item">
-                <span>Total spend</span>
-                <span className="stack-item__value">
-                  {formatCurrency(supplier.totalAmount)}
-                </span>
-              </li>
-              <li className="stack-item">
-                <span>Last purchase</span>
-                <span className="stack-item__value">
-                  {supplier.lastPurchaseDate
-                    ? formatShortDate(supplier.lastPurchaseDate)
-                    : 'N/A'}
-                </span>
-              </li>
-            </ul>
+              <ul className="stack-list" style={{ marginTop: '1rem' }}>
+                <li className="stack-item">
+                  <span>Invoices</span>
+                  <span className="stack-item__value">{supplier.invoiceCount}</span>
+                </li>
+                <li className="stack-item">
+                  <span>Total spend</span>
+                  <span className="stack-item__value">
+                    {formatCurrency(supplier.totalAmount)}
+                  </span>
+                </li>
+                <li className="stack-item">
+                  <span>Last purchase</span>
+                  <span className="stack-item__value">
+                    {supplier.lastPurchaseDate
+                      ? formatShortDate(supplier.lastPurchaseDate)
+                      : 'N/A'}
+                  </span>
+                </li>
+              </ul>
 
-            <div className="action-row" style={{ marginTop: '1rem' }}>
-              <button
-                type="button"
-                className="button"
-                disabled={savingId === supplier.id}
-                onClick={() => void handleSaveSupplier(supplier)}
-              >
-                {savingId === supplier.id ? 'Saving…' : 'Save supplier'}
-              </button>
-            </div>
+              <div className="action-row" style={{ marginTop: '1rem' }}>
+                <button
+                  type="button"
+                  className="button"
+                  disabled={savingId === supplier.id}
+                  onClick={() => void handleSaveSupplier(supplier)}
+                >
+                  {savingId === supplier.id ? 'Saving…' : 'Save supplier'}
+                </button>
+              </div>
+            </article>
+          ))
+        ) : (
+          <article className="surface-panel section-card supplier-empty-card">
+            <EmptyStateCard
+              title="No suppliers are stored yet"
+              copy="Create a supplier manually or import the first invoice to bootstrap the live directory and spend totals."
+              action={
+                <Link
+                  to="/invoices"
+                  search={defaultInvoiceSearch}
+                  className="button button-secondary"
+                >
+                  Review invoices
+                </Link>
+              }
+            />
           </article>
-        ))}
+        )}
       </section>
     </div>
   )

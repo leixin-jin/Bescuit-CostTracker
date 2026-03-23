@@ -3,6 +3,11 @@ import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import { AppHeader } from '../components/AppHeader'
+import { AppRuntime } from '../components/AppRuntime'
+import {
+  RouteErrorState,
+  RouteNotFoundState,
+} from '../components/AppStates'
 import { BottomNav } from '../components/BottomNav'
 
 import appCss from '../styles.css?url'
@@ -27,7 +32,7 @@ export const Route = createRootRoute({
       },
       {
         name: 'theme-color',
-        content: '#0f1117',
+        content: '#f6f1e8',
       },
     ],
     links: [
@@ -39,9 +44,19 @@ export const Route = createRootRoute({
         rel: 'manifest',
         href: '/manifest.json',
       },
+      {
+        rel: 'icon',
+        href: '/favicon.ico',
+      },
+      {
+        rel: 'apple-touch-icon',
+        href: '/logo192.png',
+      },
     ],
   }),
   shellComponent: RootDocument,
+  errorComponent: RouteErrorState,
+  notFoundComponent: RouteNotFoundState,
 })
 
 function RootDocument({ children }: { children: ReactNode }) {
@@ -52,6 +67,7 @@ function RootDocument({ children }: { children: ReactNode }) {
       </head>
       <body>
         <AppHeader />
+        <AppRuntime />
         <main className="app-shell app-main">{children}</main>
         <BottomNav />
         <TanStackDevtools

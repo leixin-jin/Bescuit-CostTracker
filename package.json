@@ -16,9 +16,15 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate:local": "wrangler d1 migrations apply costtracker-db --local",
     "db:migrate:remote": "wrangler d1 migrations apply costtracker-db --remote",
+    "db:backup:local": "node scripts/export-d1.mjs local",
+    "db:backup:staging": "node scripts/export-d1.mjs staging",
+    "db:backup:production": "node scripts/export-d1.mjs production",
     "db:studio": "drizzle-kit studio",
     "cf:typegen": "wrangler types",
-    "deploy": "pnpm run build && wrangler deploy"
+    "deploy": "pnpm deploy:production",
+    "deploy:staging": "node scripts/deploy-cloudflare.mjs staging",
+    "deploy:production": "node scripts/deploy-cloudflare.mjs production",
+    "smoke:release": "node scripts/smoke-release.mjs"
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.26.0",
