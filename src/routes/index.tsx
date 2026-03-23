@@ -1,60 +1,16 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
+import { DashboardOverview } from '../features/analytics/AnalyticsViews'
+import { getDashboardMetricsQuery } from '../features/analytics/analytics.functions'
 import { defaultInvoiceSearch } from '../features/invoices/schema'
 
-const metrics = [
-  {
-    label: 'D1 tables',
-    value: '4',
-    copy: 'Suppliers, categories, invoices, and invoice items are modeled and indexed.',
-  },
-  {
-    label: 'Seed categories',
-    value: '11',
-    copy: 'Base product taxonomy is ready to receive Gemini invoice payloads.',
-  },
-  {
-    label: 'Live routes',
-    value: '6',
-    copy: 'Dashboard, upload, invoices, analytics, compare, and suppliers skeleton pages are wired.',
-  },
-  {
-    label: 'Current milestone',
-    value: 'Phase 1 verified',
-    copy:
-      'Build, lint, tests, local D1 migration, and seed checks now gate the move into Phase 2.',
-  },
-] as const
-
-const foundationChecklist = [
-  'TanStack Start app scaffolded in the existing repository.',
-  'Wrangler configured for Cloudflare Workers plus D1 binding and migrations folder.',
-  'Drizzle schema mirrors the planning document and includes invoice-friendly indexes.',
-  'Global layout now behaves like a focused operations dashboard on desktop and mobile.',
-  'Vitest now runs outside the Cloudflare worker runner and protects the baseline shell.',
-  'Local D1 migration plus the 11 default categories have been verified before Phase 2.',
-] as const
-
-const nextSteps = [
-  {
-    title: 'Phase 2: paste JSON',
-    detail:
-      'Add Zod validation, parse preview, inline editing, and invoice save flow on top of the verified Phase 1 baseline.',
-  },
-  {
-    title: 'Phase 3: analytics',
-    detail:
-      'Wire real product trends, supplier comparison queries, and dashboard stats.',
-  },
-  {
-    title: 'Phase 4: ship',
-    detail:
-      'Polish responsive motion, add PWA details, and deploy to Cloudflare.',
-  },
-] as const
-
-export const Route = createFileRoute('/')({ component: DashboardPage })
+export const Route = createFileRoute('/')({
+  loader: () => getDashboardMetricsQuery(),
+  component: DashboardPage,
+})
 
 function DashboardPage() {
+  const metrics = Route.useLoaderData()
+
   return (
     <div className="page-shell page-fade">
       <section className="surface-panel hero-panel">
@@ -62,14 +18,13 @@ function DashboardPage() {
           <div>
             <p className="eyebrow">Mediterranean cost control</p>
             <h2 className="page-title">
-              Invoice-ready architecture for a bar-restaurante cost tracker.
+              Live purchasing metrics for a bar-restaurante cost tracker.
             </h2>
             <p className="page-copy">
-              The app foundation is now verified against the Phase 1 gate:
-              Cloudflare worker runtime, D1-ready schema, Drizzle migrations,
-              route scaffolding, a passing test baseline, and reproducible local
-              database setup for the upload, analytics, invoice history,
-              supplier management, and comparison flows.
+              The dashboard now reads the real D1 state behind invoices, line
+              items, suppliers, analytics, and comparison flows. It surfaces
+              current spend, supplier coverage, recent import activity, and
+              product category movement instead of fixed placeholder metrics.
             </p>
           </div>
 
@@ -90,53 +45,13 @@ function DashboardPage() {
             <div className="pill-row" style={{ marginTop: '1rem' }}>
               <span className="pill">Cloudflare Workers</span>
               <span className="pill">D1 + Drizzle</span>
-              <span className="pill">TanStack Router</span>
+              <span className="pill">Phase 3 analytics</span>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="metrics-grid">
-        {metrics.map((metric) => (
-          <article key={metric.label} className="surface-panel metric-card">
-            <p className="metric-label">{metric.label}</p>
-            <p className="metric-value">{metric.value}</p>
-            <p className="metric-copy">{metric.copy}</p>
-          </article>
-        ))}
-      </section>
-
-      <section className="content-grid">
-        <article className="surface-panel section-card">
-          <p className="eyebrow">Foundation checklist</p>
-          <h3 className="section-heading">What is already in place</h3>
-          <ul className="check-list" style={{ marginTop: '1rem' }}>
-            {foundationChecklist.map((item) => (
-              <li key={item} className="check-item">
-                <span className="check-item__icon">01</span>
-                <span className="section-copy">{item}</span>
-              </li>
-            ))}
-          </ul>
-        </article>
-
-        <article className="surface-panel section-card surface-muted">
-          <p className="eyebrow">Roadmap</p>
-          <h3 className="section-heading">Next delivery slices</h3>
-          <ul className="stack-list" style={{ marginTop: '1rem' }}>
-            {nextSteps.map((step) => (
-              <li key={step.title} className="stack-item">
-                <div>
-                  <strong>{step.title}</strong>
-                  <p className="section-copy" style={{ marginTop: '0.35rem' }}>
-                    {step.detail}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </article>
-      </section>
+      <DashboardOverview metrics={metrics} />
     </div>
   )
 }

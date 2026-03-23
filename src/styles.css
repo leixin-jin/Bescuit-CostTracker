@@ -589,6 +589,10 @@ button:disabled {
   color: var(--danger);
 }
 
+.feedback-inline--warning {
+  color: #8d6934;
+}
+
 .feedback-block {
   margin-top: 1rem;
   padding: 0.95rem 1rem;
@@ -747,6 +751,34 @@ button:disabled {
   gap: 0.8rem;
 }
 
+.suggestion-list {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+
+.suggestion-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid rgba(120, 104, 86, 0.1);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.56);
+  text-align: left;
+}
+
+.suggestion-item__meta {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
 .comparison-row {
   display: grid;
   gap: 0.8rem;
@@ -785,6 +817,21 @@ button:disabled {
 
 .price-card.is-best {
   border: 1px solid rgba(115, 151, 119, 0.24);
+  background: rgba(234, 245, 232, 0.92);
+}
+
+.pagination-row {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.unit-pill {
+  min-height: 42px;
+  padding: 0.7rem 0.95rem;
+}
+
+.unit-pill.is-selected {
+  border-color: rgba(115, 151, 119, 0.28);
   background: rgba(234, 245, 232, 0.92);
 }
 

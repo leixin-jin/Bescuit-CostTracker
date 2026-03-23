@@ -48,7 +48,7 @@ export function AppHeader() {
 
         <div className="status-pill">
           <span className="status-dot" />
-          Phase 1 verified
+          Phase 3 live
         </div>
       </div>
     </header>

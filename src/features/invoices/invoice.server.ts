@@ -15,6 +15,7 @@ import {
   invoices,
   suppliers,
 } from '../../db/schema'
+import { cleanProductName, normalizeProductName } from '../analytics/product'
 import { sanitizeInvoiceDraft } from './normalize'
 import type {
   CategoryOption,
@@ -104,7 +105,8 @@ export async function saveImportedInvoice(input: {
         invoiceId,
         supplierId: supplierIdSql,
         categoryId: resolveCategoryId(item.categoryName, categoryCatalog),
-        productName: item.productName,
+        productName: cleanProductName(item.productName),
+        productNameNormalized: normalizeProductName(item.productName),
         quantity: item.quantity,
         unit: item.unit,
         unitPrice: item.unitPrice,
@@ -303,7 +305,8 @@ export async function updateInvoiceById(input: {
         invoiceId: input.invoiceId,
         supplierId: supplierIdSql,
         categoryId: resolveCategoryId(item.categoryName, categoryCatalog),
-        productName: item.productName,
+        productName: cleanProductName(item.productName),
+        productNameNormalized: normalizeProductName(item.productName),
         quantity: item.quantity,
         unit: item.unit,
         unitPrice: item.unitPrice,

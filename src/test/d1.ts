@@ -1,12 +1,17 @@
-import { readFileSync } from 'node:fs'
+import { readFileSync, readdirSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { DatabaseSync } from 'node:sqlite'
 import type { StatementSync } from 'node:sqlite'
 
-const migrationSql = readFileSync(
-  resolve(process.cwd(), 'drizzle/migrations/0000_tired_red_hulk.sql'),
-  'utf8',
-).replaceAll('--> statement-breakpoint', '\n')
+const migrationsDirectory = resolve(process.cwd(), 'drizzle/migrations')
+const migrationSql = readdirSync(migrationsDirectory)
+  .filter((fileName) => fileName.endsWith('.sql'))
+  .sort()
+  .map((fileName) =>
+    readFileSync(resolve(migrationsDirectory, fileName), 'utf8'),
+  )
+  .join('\n')
+  .replaceAll('--> statement-breakpoint', '\n')
 
 type SqlRow = Record<string, unknown>
 

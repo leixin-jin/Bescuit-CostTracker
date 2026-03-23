@@ -68,6 +68,7 @@ export const invoiceItems = sqliteTable(
       .references(() => suppliers.id),
     categoryId: text('category_id').references(() => categories.id),
     productName: text('product_name').notNull(),
+    productNameNormalized: text('product_name_normalized').notNull(),
     quantity: real('quantity').notNull(),
     unit: text('unit').notNull().default('ud'),
     unitPrice: real('unit_price').notNull(),
@@ -78,6 +79,18 @@ export const invoiceItems = sqliteTable(
   },
   (table) => [
     index('idx_items_product').on(table.productName),
+    index('idx_items_product_normalized').on(table.productNameNormalized),
+    index('idx_items_product_unit_date').on(
+      table.productNameNormalized,
+      table.unit,
+      table.itemDate,
+    ),
+    index('idx_items_product_supplier_date').on(
+      table.productNameNormalized,
+      table.unit,
+      table.supplierId,
+      table.itemDate,
+    ),
     index('idx_items_supplier').on(table.supplierId),
     index('idx_items_date').on(table.itemDate),
     index('idx_items_category').on(table.categoryId),
