@@ -16,7 +16,7 @@ function isInstallPromptEvent(
 
 export function AppRuntime() {
   const [isOffline, setIsOffline] = useState(() =>
-    typeof navigator === 'undefined' ? false : !navigator.onLine,
+    typeof window === 'undefined' ? false : !window.navigator.onLine,
   )
   const [installEvent, setInstallEvent] =
     useState<BeforeInstallPromptEvent | null>(null)
@@ -25,7 +25,7 @@ export function AppRuntime() {
 
   useEffect(() => {
     function syncConnectivityState() {
-      setIsOffline(!navigator.onLine)
+      setIsOffline(!window.navigator.onLine)
     }
 
     function handleOnline() {
