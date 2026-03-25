@@ -23,6 +23,21 @@ describe('AppRuntime', () => {
     expect(screen.getByText(/cached pages remain available/i)).toBeTruthy()
   })
 
+  it('clears stale offline feedback when the page is shown again online', async () => {
+    setOnlineStatus(false)
+
+    render(<AppRuntime />)
+
+    expect(screen.getByText('Offline mode is active.')).toBeTruthy()
+
+    setOnlineStatus(true)
+    window.dispatchEvent(new Event('pageshow'))
+
+    await waitFor(() => {
+      expect(screen.queryByText('Offline mode is active.')).toBeNull()
+    })
+  })
+
   it('captures the install prompt and forwards the install action', async () => {
     setOnlineStatus(true)
 

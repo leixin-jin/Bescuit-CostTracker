@@ -24,20 +24,35 @@ export function AppRuntime() {
     useState<ServiceWorkerRegistration | null>(null)
 
   useEffect(() => {
+    function syncConnectivityState() {
+      setIsOffline(!navigator.onLine)
+    }
+
     function handleOnline() {
-      setIsOffline(false)
+      syncConnectivityState()
     }
 
     function handleOffline() {
-      setIsOffline(true)
+      syncConnectivityState()
     }
 
+    function handleForegroundSync() {
+      syncConnectivityState()
+    }
+
+    syncConnectivityState()
     window.addEventListener('online', handleOnline)
     window.addEventListener('offline', handleOffline)
+    window.addEventListener('focus', handleForegroundSync)
+    window.addEventListener('pageshow', handleForegroundSync)
+    document.addEventListener('visibilitychange', handleForegroundSync)
 
     return () => {
       window.removeEventListener('online', handleOnline)
       window.removeEventListener('offline', handleOffline)
+      window.removeEventListener('focus', handleForegroundSync)
+      window.removeEventListener('pageshow', handleForegroundSync)
+      document.removeEventListener('visibilitychange', handleForegroundSync)
     }
   }, [])
 
