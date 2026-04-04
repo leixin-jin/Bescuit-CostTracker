@@ -27,6 +27,7 @@ const envArgs = target === 'production' ? [] : ['--env', target]
 const steps = [
   ['Verify Wrangler auth', ['pnpm', 'exec', 'wrangler', 'whoami']],
   ['Build application', ['pnpm', 'run', 'build']],
+  /*
   [
     'Export remote D1 backup',
     [
@@ -42,6 +43,7 @@ const steps = [
       ...envArgs,
     ],
   ],
+  */
   [
     'Apply remote migrations',
     [
