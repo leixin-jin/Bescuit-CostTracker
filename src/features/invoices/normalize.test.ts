@@ -48,7 +48,7 @@ describe('invoice normalization', () => {
       taxRate: 0.1,
     })
     expect(result.warnings).toContain(
-      'Line "Pollo entero" was mapped to "Carne" automatically.',
+      '行项 "Pollo entero" 已自动映射到分类 "Carne"。',
     )
   })
 
@@ -90,7 +90,7 @@ describe('invoice normalization', () => {
       unit: 'ud',
       totalPrice: 10.89,
     })
-    expect(result.warnings[0]).toContain('Declared total')
+    expect(result.warnings[0]).toContain('申报总额')
   })
 
   it('reports invalid JSON before trying to normalize fields', () => {
@@ -105,7 +105,7 @@ describe('invoice normalization', () => {
     expect(result.errors).toEqual([
       {
         path: 'json',
-        message: 'JSON is invalid. Fix the syntax and parse again.',
+        message: 'JSON 格式无效。请修正语法后重新解析。',
       },
     ])
   })

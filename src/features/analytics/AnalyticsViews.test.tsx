@@ -22,8 +22,8 @@ describe('AnalyticsViews', () => {
       />,
     )
 
-    expect(screen.getByText('No invoices imported yet.')).toBeTruthy()
-    expect(screen.getByText('Supplier count will appear after the first import.')).toBeTruthy()
+    expect(screen.getByText('尚未导入发票。')).toBeTruthy()
+    expect(screen.getByText('第一次导入后将显示供应商数量。')).toBeTruthy()
   })
 
   it('shows a unit conflict warning on analytics pages until the user picks a unit', () => {
@@ -44,7 +44,7 @@ describe('AnalyticsViews', () => {
             ],
             selectedUnit: null,
             conflictWarning:
-              'This product has samples with multiple units. Select a unit before reading quantity trends.',
+              '该商品在样本中包含多个单位。选择一个单位后再查看数量趋势。',
           },
           trend: [],
         }}
@@ -57,7 +57,7 @@ describe('AnalyticsViews', () => {
       />,
     )
 
-    expect(screen.getByText(/multiple units/i)).toBeTruthy()
+    expect(screen.getByText(/多个单位/i)).toBeTruthy()
 
     fireEvent.click(screen.getByRole('button', { name: /kg · 2/i }))
 
@@ -84,8 +84,8 @@ describe('AnalyticsViews', () => {
       />,
     )
 
-    expect(screen.getByText('No comparison rows match the filter')).toBeTruthy()
-    expect(screen.getByRole('button', { name: 'Previous' }).hasAttribute('disabled')).toBe(true)
-    expect(screen.getByRole('button', { name: 'Next' }).hasAttribute('disabled')).toBe(true)
+    expect(screen.getByText('没有找到匹配的比价数据')).toBeTruthy()
+    expect(screen.getByRole('button', { name: '上一页' }).hasAttribute('disabled')).toBe(true)
+    expect(screen.getByRole('button', { name: '下一页' }).hasAttribute('disabled')).toBe(true)
   })
 })

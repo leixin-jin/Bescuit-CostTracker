@@ -16,22 +16,22 @@ const navigation: Array<{
   icon: typeof LayoutDashboard
   search?: typeof defaultInvoiceSearch
 }> = [
-  { to: '/', label: 'Home', exact: true, icon: LayoutDashboard },
-  { to: '/upload', label: 'Upload', icon: Upload },
+  { to: '/', label: '首页', exact: true, icon: LayoutDashboard },
+  { to: '/upload', label: '上传', icon: Upload },
   {
     to: '/invoices',
-    label: 'Invoices',
+    label: '发票',
     icon: FileStack,
     search: defaultInvoiceSearch,
   },
-  { to: '/analytics', label: 'Analytics', icon: ChartColumnBig },
-  { to: '/compare', label: 'Compare', icon: Scale },
-  { to: '/suppliers', label: 'Suppliers', icon: Store },
+  { to: '/analytics', label: '分析', icon: ChartColumnBig },
+  { to: '/compare', label: '比价', icon: Scale },
+  { to: '/suppliers', label: '供应商', icon: Store },
 ]
 
 export function BottomNav() {
   return (
-    <nav className="bottom-nav" aria-label="Bottom navigation">
+    <nav className="bottom-nav" aria-label="底部导航">
       {navigation.map((item) => {
         const Icon = item.icon
 

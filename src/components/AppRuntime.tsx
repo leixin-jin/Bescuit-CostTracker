@@ -163,10 +163,9 @@ export function AppRuntime() {
       {isOffline ? (
         <div className="runtime-banner runtime-banner--warning">
           <div>
-            <strong>Offline mode is active.</strong>
+            <strong>当前处于离线模式</strong>
             <p className="runtime-banner__copy">
-              Cached pages remain available. New data sync resumes when the
-              connection returns.
+              已缓存的页面仍可访问。恢复网络连接后将自动同步新数据。
             </p>
           </div>
         </div>
@@ -175,14 +174,13 @@ export function AppRuntime() {
       {installEvent ? (
         <div className="runtime-banner">
           <div>
-            <strong>Install Bescuit CostTracker.</strong>
+            <strong>安装 Bescuit 成本追踪</strong>
             <p className="runtime-banner__copy">
-              Add the app to the home screen for faster launch and offline
-              fallback support.
+              将应用添加到主屏幕，加快启动速度并支持离线使用。
             </p>
           </div>
           <button type="button" className="button button-secondary" onClick={() => void handleInstall()}>
-            Install app
+            安装应用
           </button>
         </div>
       ) : null}
@@ -190,13 +188,13 @@ export function AppRuntime() {
       {waitingWorker ? (
         <div className="runtime-banner runtime-banner--success">
           <div>
-            <strong>An updated release is ready.</strong>
+            <strong>新版本已就绪</strong>
             <p className="runtime-banner__copy">
-              Refresh to activate the latest cached assets and runtime fixes.
+              刷新以启用最新的缓存资源和运行时修复。
             </p>
           </div>
           <button type="button" className="button button-secondary" onClick={handleRefresh}>
-            Refresh now
+            立即刷新
           </button>
         </div>
       ) : null}

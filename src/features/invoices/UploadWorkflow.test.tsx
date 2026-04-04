@@ -32,17 +32,17 @@ describe('UploadWorkflow', () => {
       />,
     )
 
-    fireEvent.click(screen.getByRole('button', { name: 'Parse preview' }))
+    fireEvent.click(screen.getByRole('button', { name: '解析预览' }))
 
     expect(
-      await screen.findByRole('heading', { name: 'Finalize invoice fields' }),
+      await screen.findByRole('heading', { name: '完善发票字段' }),
     ).toBeTruthy()
 
-    fireEvent.change(screen.getByLabelText('Supplier'), {
+    fireEvent.change(screen.getByLabelText('供应商'), {
       target: { value: 'Makro Barcelona' },
     })
 
-    fireEvent.click(screen.getByRole('button', { name: 'Save invoice' }))
+    fireEvent.click(screen.getByRole('button', { name: '保存发票' }))
 
     await waitFor(() => {
       expect(onSave).toHaveBeenCalledTimes(1)
@@ -71,12 +71,12 @@ describe('UploadWorkflow', () => {
       />,
     )
 
-    fireEvent.change(screen.getByLabelText('Invoice JSON'), {
+    fireEvent.change(screen.getByLabelText('发票 JSON'), {
       target: { value: '{broken' },
     })
-    fireEvent.click(screen.getByRole('button', { name: 'Parse preview' }))
+    fireEvent.click(screen.getByRole('button', { name: '解析预览' }))
 
-    expect(await screen.findByText('Validation errors')).toBeTruthy()
+    expect(await screen.findByText('验证错误')).toBeTruthy()
     expect(
       screen.getByText('JSON:', { exact: false }).textContent,
     ).toContain('JSON')

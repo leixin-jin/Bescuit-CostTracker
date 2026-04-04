@@ -178,7 +178,7 @@ const importedInvoiceSchema = z.object({
   invoiceNumber: optionalTextSchema.default(''),
   totalAmount: optionalNumberLikeSchema,
   notes: optionalTextSchema.default(''),
-  items: z.array(importedInvoiceItemSchema).min(1, 'Invoice must include at least one line'),
+  items: z.array(importedInvoiceItemSchema).min(1, '发票必须至少包含一个行项'),
 })
 
 export const sampleInvoiceJson = `{
@@ -258,7 +258,7 @@ export function parseImportedInvoiceText(
     return {
       success: false,
       warnings: [],
-      errors: [{ path: 'json', message: 'Paste the Gemini JSON first.' }],
+      errors: [{ path: 'json', message: '请先粘贴 Gemini 解析后的 JSON。' }],
     }
   }
 
@@ -272,7 +272,7 @@ export function parseImportedInvoiceText(
       errors: [
         {
           path: 'json',
-          message: 'JSON is invalid. Fix the syntax and parse again.',
+          message: 'JSON 格式无效。请修正语法后重新解析。',
         },
       ],
     }
@@ -361,7 +361,7 @@ export function sanitizeInvoiceDraft(
 
   if (Math.abs(validation.data.totalAmount - lineTotal) > 0.05) {
     normalizedWarnings.push(
-      `Declared total (${formatAmount(validation.data.totalAmount)}) does not match line total (${formatAmount(lineTotal)}).`,
+      `申报总额 (${formatAmount(validation.data.totalAmount)}) 与行项合计 (${formatAmount(lineTotal)}) 不匹配。`,
     )
   }
 
@@ -394,7 +394,7 @@ export function formatIssuePath(path: string) {
   }
 
   const [, index, field] = path.split('.')
-  return `Line ${Number(index) + 1} · ${field}`
+  return `第 ${Number(index) + 1} 行 · ${field}`
 }
 
 function sanitizeImportedInvoice(
@@ -417,13 +417,13 @@ function sanitizeImportedInvoice(
       Math.abs(item.totalPrice - computedTotal) > 0.05
     ) {
       warnings.push(
-        `Line "${item.product}" total was normalized from ${formatAmount(item.totalPrice)} to ${formatAmount(computedTotal)}.`,
+        `行项 "${item.product}" 的合计金额已从 ${formatAmount(item.totalPrice)} 归一化为 ${formatAmount(computedTotal)}。`,
       )
     }
 
     if (categoryMatch.reason !== 'exact' && categoryMatch.reason !== 'alias') {
       warnings.push(
-        `Line "${item.product}" was mapped to "${categoryMatch.name}" automatically.`,
+        `行项 "${item.product}" 已自动映射到分类 "${categoryMatch.name}"。`,
       )
     }
 
@@ -448,7 +448,7 @@ function sanitizeImportedInvoice(
     Math.abs(data.totalAmount - computedInvoiceTotal) > 0.05
   ) {
     warnings.push(
-      `Invoice total was normalized from ${formatAmount(data.totalAmount)} to ${formatAmount(computedInvoiceTotal)}.`,
+      `发票总额已从 ${formatAmount(data.totalAmount)} 归一化为 ${formatAmount(computedInvoiceTotal)}。`,
     )
   }
 

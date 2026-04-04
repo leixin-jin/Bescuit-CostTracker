@@ -22,13 +22,12 @@ describe('AppHeader', () => {
   it('renders the brand, primary navigation, and current phase status', () => {
     render(<AppHeader />)
 
-    expect(screen.getByText('Bescuit CostTracker')).toBeTruthy()
+    expect(screen.getByText('Bescuit 成本追踪')).toBeTruthy()
     expect(
       screen.getByRole('heading', {
-        name: 'Bar purchasing control from invoice to insight',
+        name: '从发票到洞察的酒吧采购成本管控',
       }),
     ).toBeTruthy()
-    expect(screen.getByText('Phase 4 ready')).toBeTruthy()
 
     const navigation = screen.getByRole('navigation', { name: 'Primary' })
     const links = within(navigation).getAllByRole('link')

@@ -21,9 +21,9 @@ function UploadPage() {
     return (
       <div className="page-shell page-fade">
         <PageNotice
-          eyebrow="Upload blocked"
-          title="No category catalog is available."
-          copy="Run the seeded migrations first so imported invoice lines can map to a stable category list."
+          eyebrow="上传受阻"
+          title="分类目录不可用"
+          copy="请先运行种子数据迁移，以便导入的发票行项能映射到稳定的分类列表。"
         />
       </div>
     )

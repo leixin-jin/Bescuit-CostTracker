@@ -58,16 +58,16 @@ function InvoiceDetailPage() {
     return (
       <div className="page-shell page-fade">
         <PageNotice
-          eyebrow="Invoice detail"
-          title="Invoice not found."
-          copy="The record may have been deleted or the link is stale."
+          eyebrow="发票详情"
+          title="发票未找到"
+          copy="该记录可能已被删除，或链接已失效。"
           actions={
             <Link
               to="/invoices"
               search={defaultInvoiceSearch}
               className="button button-secondary"
             >
-              Back to invoices
+              返回发票列表
             </Link>
           }
         />
@@ -106,7 +106,7 @@ function InvoiceDetailPage() {
       await router.invalidate()
     } catch (error) {
       setSaveError(
-        error instanceof Error ? error.message : 'Invoice update failed.',
+        error instanceof Error ? error.message : '发票更新失败。',
       )
     } finally {
       setIsSaving(false)
@@ -119,7 +119,7 @@ function InvoiceDetailPage() {
     }
 
     const confirmed = window.confirm(
-      'Delete this invoice? Invoice items will be removed as well.',
+      '确定删除此发票？发票行项也将一并删除。',
     )
 
     if (!confirmed) {
@@ -134,7 +134,7 @@ function InvoiceDetailPage() {
       navigate({ to: '/invoices', search: defaultInvoiceSearch })
     } catch (error) {
       setSaveError(
-        error instanceof Error ? error.message : 'Invoice deletion failed.',
+        error instanceof Error ? error.message : '发票删除失败。',
       )
       setIsSaving(false)
     }
@@ -143,14 +143,12 @@ function InvoiceDetailPage() {
   return (
     <div className="page-shell page-fade">
       <section className="surface-panel hero-panel">
-        <p className="eyebrow">Invoice detail</p>
+        <p className="eyebrow">发票详情</p>
         <h2 className="page-title">
-          {draft.invoiceNumber || 'Sin numero'} · {draft.supplierName}
+          {draft.invoiceNumber || '无编号'} · {draft.supplierName}
         </h2>
         <p className="page-copy">
-          Update the invoice header, supplier metadata, or line items. Deletes
-          cascade through `invoice_items`, so the registry and supplier summary
-          stay clean.
+          更新发票表头、供应商信息或行项。删除操作会级联清除 invoice_items，保持登记簿和供应商汇总数据整洁。
         </p>
         <div className="hero-actions" style={{ marginTop: '1rem' }}>
           <Link
@@ -158,7 +156,7 @@ function InvoiceDetailPage() {
             search={defaultInvoiceSearch}
             className="button button-secondary"
           >
-            Back to invoices
+            返回发票列表
           </Link>
           <button
             type="button"
@@ -166,7 +164,7 @@ function InvoiceDetailPage() {
             disabled={isSaving}
             onClick={() => void handleSave()}
           >
-            {isSaving ? 'Working…' : 'Save changes'}
+            {isSaving ? '处理中…' : '保存更改'}
           </button>
           <button
             type="button"
@@ -174,7 +172,7 @@ function InvoiceDetailPage() {
             disabled={isSaving}
             onClick={() => void handleDelete()}
           >
-            Delete invoice
+            删除发票
           </button>
         </div>
         <div className="pill-row" style={{ marginTop: '1rem' }}>
@@ -194,7 +192,7 @@ function InvoiceDetailPage() {
         <article className="surface-panel section-card">
           {issues.length > 0 ? (
             <div className="feedback-block feedback-block--danger">
-              <p className="feedback-title">Validation errors</p>
+              <p className="feedback-title">验证错误</p>
               <ul className="feedback-list">
                 {issues.map((issue) => (
                   <li key={`${issue.path}-${issue.message}`}>
@@ -207,7 +205,7 @@ function InvoiceDetailPage() {
 
           {warnings.length > 0 ? (
             <div className="feedback-block feedback-block--warning">
-              <p className="feedback-title">Draft warnings</p>
+              <p className="feedback-title">草稿警告</p>
               <ul className="feedback-list">
                 {warnings.map((warning) => (
                   <li key={warning}>{warning}</li>
@@ -230,23 +228,23 @@ function InvoiceDetailPage() {
         </article>
 
         <article className="surface-panel section-card surface-muted">
-          <p className="eyebrow">Audit trail</p>
-          <h3 className="section-heading">Stored source payload</h3>
+          <p className="eyebrow">审计追踪</p>
+          <h3 className="section-heading">存储的原始数据</h3>
           <p className="section-copy">
-            The original JSON is preserved on the invoice record for traceability.
+            原始 JSON 保存在发票记录中，用于溯源追踪。
           </p>
           <div className="stack-list" style={{ marginTop: '1rem' }}>
             <div className="stack-item">
-              <span>Created at</span>
+              <span>创建时间</span>
               <span className="stack-item__value">{invoice.createdAt}</span>
             </div>
             <div className="stack-item">
-              <span>Updated at</span>
+              <span>更新时间</span>
               <span className="stack-item__value">{invoice.updatedAt}</span>
             </div>
           </div>
           <pre className="code-preview" style={{ marginTop: '1rem' }}>
-            {invoice.rawJson ?? 'No raw JSON stored for this invoice.'}
+            {invoice.rawJson ?? '本发票无原始 JSON 存储。'}
           </pre>
         </article>
       </section>

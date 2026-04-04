@@ -23,18 +23,18 @@ describe('BottomNav', () => {
     render(<BottomNav />)
 
     const navigation = screen.getByRole('navigation', {
-      name: 'Bottom navigation',
+      name: '底部导航',
     })
     const links = within(navigation).getAllByRole('link')
 
     expect(links).toHaveLength(6)
     expect(links.map((link) => link.textContent)).toEqual([
-      'Home',
-      'Upload',
-      'Invoices',
-      'Analytics',
-      'Compare',
-      'Suppliers',
+      '首页',
+      '上传',
+      '发票',
+      '分析',
+      '比价',
+      '供应商',
     ])
   })
 })

@@ -58,7 +58,7 @@ function SuppliersPage() {
       await router.invalidate()
     } catch (error) {
       setFeedback(
-        error instanceof Error ? error.message : 'Supplier save failed.',
+        error instanceof Error ? error.message : '供应商保存失败。',
       )
     } finally {
       setSavingId(null)
@@ -67,7 +67,7 @@ function SuppliersPage() {
 
   async function handleCreateSupplier() {
     if (!newSupplier.name.trim()) {
-      setFeedback('Supplier name is required.')
+      setFeedback('供应商名称不能为空。')
       return
     }
 
@@ -92,7 +92,7 @@ function SuppliersPage() {
       await router.invalidate()
     } catch (error) {
       setFeedback(
-        error instanceof Error ? error.message : 'Supplier creation failed.',
+        error instanceof Error ? error.message : '供应商创建失败。',
       )
     } finally {
       setSavingId(null)
@@ -102,12 +102,10 @@ function SuppliersPage() {
   return (
     <div className="page-shell page-fade">
       <section className="surface-panel hero-panel">
-        <p className="eyebrow">Supplier directory</p>
-        <h2 className="page-title">Maintain live supplier records and spend context.</h2>
+        <p className="eyebrow">供应商目录</p>
+        <h2 className="page-title">维护实时供应商记录与支出情况</h2>
         <p className="page-copy">
-          Imported invoices now bootstrap the supplier registry automatically.
-          Contact fields, operational notes, invoice counts, and total spend are
-          all driven by D1.
+          导入的发票现在自动建立供应商档案。联系方式、运营备注、发票计数和总支出均由 D1 驱动。
         </p>
       </section>
 
@@ -115,14 +113,14 @@ function SuppliersPage() {
         <article className="surface-panel section-card">
           <div className="section-card__header">
             <div>
-              <p className="eyebrow">Create supplier</p>
-              <h3 className="section-heading">Add a manual supplier record</h3>
+              <p className="eyebrow">创建供应商</p>
+              <h3 className="section-heading">手动添加供应商记录</h3>
             </div>
           </div>
 
           <div className="two-column-grid">
             <div className="field">
-              <label htmlFor="new-supplier-name">Supplier name</label>
+              <label htmlFor="new-supplier-name">供应商名称</label>
               <input
                 id="new-supplier-name"
                 className="text-input"
@@ -137,7 +135,7 @@ function SuppliersPage() {
             </div>
 
             <div className="field">
-              <label htmlFor="new-supplier-contact">Contact</label>
+              <label htmlFor="new-supplier-contact">联系方式</label>
               <input
                 id="new-supplier-contact"
                 className="text-input"
@@ -153,7 +151,7 @@ function SuppliersPage() {
           </div>
 
           <div className="field">
-            <label htmlFor="new-supplier-notes">Notes</label>
+            <label htmlFor="new-supplier-notes">备注</label>
             <textarea
               id="new-supplier-notes"
               className="text-area text-area--compact"
@@ -174,7 +172,7 @@ function SuppliersPage() {
               disabled={savingId === 'new'}
               onClick={() => void handleCreateSupplier()}
             >
-              {savingId === 'new' ? 'Saving…' : 'Add supplier'}
+              {savingId === 'new' ? '保存中…' : '添加供应商'}
             </button>
           </div>
 
@@ -184,15 +182,15 @@ function SuppliersPage() {
         </article>
 
         <article className="surface-panel section-card surface-muted">
-          <p className="eyebrow">Registry totals</p>
-          <h3 className="section-heading">Current supplier coverage</h3>
+          <p className="eyebrow">登记汇总</p>
+          <h3 className="section-heading">当前供应商覆盖</h3>
           <ul className="stack-list" style={{ marginTop: '1rem' }}>
             <li className="stack-item">
-              <span>Suppliers</span>
+              <span>供应商数</span>
               <span className="stack-item__value">{records.length}</span>
             </li>
             <li className="stack-item">
-              <span>Total spend</span>
+              <span>总支出</span>
               <span className="stack-item__value">
                 {formatCurrency(
                   records.reduce((sum, record) => sum + record.totalAmount, 0),
@@ -200,7 +198,7 @@ function SuppliersPage() {
               </span>
             </li>
             <li className="stack-item">
-              <span>Suppliers with invoices</span>
+              <span>有发票的供应商</span>
               <span className="stack-item__value">
                 {records.filter((record) => record.invoiceCount > 0).length}
               </span>
@@ -217,7 +215,7 @@ function SuppliersPage() {
               className="surface-panel section-card"
             >
               <div className="field">
-                <label htmlFor={`supplier-name-${supplier.id}`}>Supplier</label>
+                <label htmlFor={`supplier-name-${supplier.id}`}>供应商</label>
                 <input
                   id={`supplier-name-${supplier.id}`}
                   className="text-input"
@@ -235,7 +233,7 @@ function SuppliersPage() {
               </div>
 
               <div className="field">
-                <label htmlFor={`supplier-contact-${supplier.id}`}>Contact</label>
+                <label htmlFor={`supplier-contact-${supplier.id}`}>联系方式</label>
                 <input
                   id={`supplier-contact-${supplier.id}`}
                   className="text-input"
@@ -253,7 +251,7 @@ function SuppliersPage() {
               </div>
 
               <div className="field">
-                <label htmlFor={`supplier-notes-${supplier.id}`}>Notes</label>
+                <label htmlFor={`supplier-notes-${supplier.id}`}>备注</label>
                 <textarea
                   id={`supplier-notes-${supplier.id}`}
                   className="text-area text-area--compact"
@@ -272,17 +270,17 @@ function SuppliersPage() {
 
               <ul className="stack-list" style={{ marginTop: '1rem' }}>
                 <li className="stack-item">
-                  <span>Invoices</span>
+                  <span>发票数</span>
                   <span className="stack-item__value">{supplier.invoiceCount}</span>
                 </li>
                 <li className="stack-item">
-                  <span>Total spend</span>
+                  <span>总支出</span>
                   <span className="stack-item__value">
                     {formatCurrency(supplier.totalAmount)}
                   </span>
                 </li>
                 <li className="stack-item">
-                  <span>Last purchase</span>
+                  <span>最近采购</span>
                   <span className="stack-item__value">
                     {supplier.lastPurchaseDate
                       ? formatShortDate(supplier.lastPurchaseDate)
@@ -298,7 +296,7 @@ function SuppliersPage() {
                   disabled={savingId === supplier.id}
                   onClick={() => void handleSaveSupplier(supplier)}
                 >
-                  {savingId === supplier.id ? 'Saving…' : 'Save supplier'}
+                  {savingId === supplier.id ? '保存中…' : '保存供应商'}
                 </button>
               </div>
             </article>
@@ -306,15 +304,15 @@ function SuppliersPage() {
         ) : (
           <article className="surface-panel section-card supplier-empty-card">
             <EmptyStateCard
-              title="No suppliers are stored yet"
-              copy="Create a supplier manually or import the first invoice to bootstrap the live directory and spend totals."
+              title="暂无供应商数据"
+              copy="手动创建供应商或导入第一张发票，以自动建立供应商目录及支出汇总。"
               action={
                 <Link
                   to="/invoices"
                   search={defaultInvoiceSearch}
                   className="button button-secondary"
                 >
-                  Review invoices
+                  查看发票
                 </Link>
               }
             />

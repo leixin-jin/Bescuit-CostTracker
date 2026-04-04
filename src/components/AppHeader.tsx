@@ -7,12 +7,12 @@ const navigation: Array<{
   exact?: boolean
   search?: typeof defaultInvoiceSearch
 }> = [
-  { to: '/', label: 'Dashboard', exact: true },
-  { to: '/upload', label: 'Upload' },
-  { to: '/invoices', label: 'Invoices', search: defaultInvoiceSearch },
-  { to: '/analytics', label: 'Analytics' },
-  { to: '/compare', label: 'Compare' },
-  { to: '/suppliers', label: 'Suppliers' },
+  { to: '/', label: '仪表盘', exact: true },
+  { to: '/upload', label: '上传' },
+  { to: '/invoices', label: '发票', search: defaultInvoiceSearch },
+  { to: '/analytics', label: '分析' },
+  { to: '/compare', label: '比价' },
+  { to: '/suppliers', label: '供应商' },
 ]
 
 export function AppHeader() {
@@ -24,9 +24,9 @@ export function AppHeader() {
             BC
           </Link>
           <div>
-            <p className="eyebrow">Bescuit CostTracker</p>
+            <p className="eyebrow">Bescuit 成本追踪</p>
             <h1 className="brand-title">
-              Bar purchasing control from invoice to insight
+              从发票到洞察的酒吧采购成本管控
             </h1>
           </div>
         </div>
@@ -45,11 +45,6 @@ export function AppHeader() {
             </Link>
           ))}
         </nav>
-
-        <div className="status-pill">
-          <span className="status-dot" />
-          Phase 4 ready
-        </div>
       </div>
     </header>
   )

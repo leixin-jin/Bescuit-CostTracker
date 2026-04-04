@@ -96,7 +96,7 @@ export function InvoiceEditor({
       <div className="two-column-grid">
         <Field
           error={issuesByPath.supplierName?.[0]}
-          label="Supplier"
+          label="供应商"
           htmlFor="supplier-name"
         >
           <input
@@ -110,7 +110,7 @@ export function InvoiceEditor({
 
         <Field
           error={issuesByPath.invoiceDate?.[0]}
-          label="Invoice date"
+          label="发票日期"
           htmlFor="invoice-date"
         >
           <input
@@ -125,14 +125,14 @@ export function InvoiceEditor({
 
         <Field
           error={issuesByPath.invoiceNumber?.[0]}
-          label="Invoice number"
+          label="发票编号"
           htmlFor="invoice-number"
         >
           <input
             id="invoice-number"
             className={cn('text-input', issuesByPath.invoiceNumber && 'is-invalid')}
             disabled={disabled}
-            placeholder="Optional"
+            placeholder="选填"
             value={draft.invoiceNumber}
             onChange={(event) => updateDraft('invoiceNumber', event.target.value)}
           />
@@ -140,7 +140,7 @@ export function InvoiceEditor({
 
         <Field
           error={issuesByPath.status?.[0]}
-          label="Status"
+          label="状态"
           htmlFor="invoice-status"
         >
           <select
@@ -152,14 +152,14 @@ export function InvoiceEditor({
               updateDraft('status', event.target.value as InvoiceStatus)
             }
           >
-            <option value="draft">draft</option>
-            <option value="verified">verified</option>
+            <option value="draft">草稿</option>
+            <option value="verified">已审核</option>
           </select>
         </Field>
 
         <Field
           error={issuesByPath.supplierContact?.[0]}
-          label="Supplier contact"
+          label="供应商联系方式"
           htmlFor="supplier-contact"
         >
           <input
@@ -169,7 +169,7 @@ export function InvoiceEditor({
               issuesByPath.supplierContact && 'is-invalid',
             )}
             disabled={disabled}
-            placeholder="Optional"
+            placeholder="选填"
             value={draft.supplierContact}
             onChange={(event) =>
               updateDraft('supplierContact', event.target.value)
@@ -179,7 +179,7 @@ export function InvoiceEditor({
 
         <Field
           error={issuesByPath.totalAmount?.[0]}
-          label="Declared total"
+          label="申报总额"
           htmlFor="invoice-total"
         >
           <div className="field-inline">
@@ -204,7 +204,7 @@ export function InvoiceEditor({
               disabled={disabled}
               onClick={syncInvoiceTotal}
             >
-              Sync lines
+              同步行总计
             </button>
           </div>
         </Field>
@@ -212,7 +212,7 @@ export function InvoiceEditor({
 
       <Field
         error={issuesByPath.supplierNotes?.[0]}
-        label="Supplier notes"
+        label="供应商备注"
         htmlFor="supplier-notes"
       >
         <textarea
@@ -222,13 +222,13 @@ export function InvoiceEditor({
             issuesByPath.supplierNotes && 'is-invalid',
           )}
           disabled={disabled}
-          placeholder="Negotiation notes, delivery caveats, payment behavior..."
+          placeholder="谈判备注、配送注意事项、付款表现…"
           value={draft.supplierNotes}
           onChange={(event) => updateDraft('supplierNotes', event.target.value)}
         />
       </Field>
 
-      <Field error={issuesByPath.notes?.[0]} label="Invoice notes" htmlFor="invoice-notes">
+      <Field error={issuesByPath.notes?.[0]} label="发票备注" htmlFor="invoice-notes">
         <textarea
           id="invoice-notes"
           className={cn(
@@ -236,7 +236,7 @@ export function InvoiceEditor({
             issuesByPath.notes && 'is-invalid',
           )}
           disabled={disabled}
-          placeholder="Internal notes for this invoice"
+          placeholder="本发票内部备注"
           value={draft.notes}
           onChange={(event) => updateDraft('notes', event.target.value)}
         />
@@ -244,17 +244,17 @@ export function InvoiceEditor({
 
       <div className="summary-grid">
         <article className="surface-panel section-card surface-muted">
-          <p className="metric-label">Lines</p>
+          <p className="metric-label">行数</p>
           <p className="metric-value metric-value--compact">{draft.items.length}</p>
         </article>
         <article className="surface-panel section-card surface-muted">
-          <p className="metric-label">Computed lines</p>
+          <p className="metric-label">行项合计</p>
           <p className="metric-value metric-value--compact">
             {formatCurrency(computedTotal)}
           </p>
         </article>
         <article className="surface-panel section-card surface-muted">
-          <p className="metric-label">Declared total</p>
+          <p className="metric-label">申报总额</p>
           <p className="metric-value metric-value--compact">
             {formatCurrency(draft.totalAmount)}
           </p>
@@ -265,14 +265,14 @@ export function InvoiceEditor({
         <table className="data-table invoice-editor-table">
           <thead>
             <tr>
-              <th>Producto</th>
-              <th>Categoria</th>
-              <th>Cantidad</th>
-              <th>Unidad</th>
-              <th>Unitario</th>
-              <th>IVA</th>
-              <th>Total</th>
-              <th>Fecha</th>
+              <th>产品</th>
+              <th>分类</th>
+              <th>数量</th>
+              <th>单位</th>
+              <th>单价</th>
+              <th>增值税</th>
+              <th>合计</th>
+              <th>日期</th>
               <th />
             </tr>
           </thead>
@@ -408,7 +408,7 @@ export function InvoiceEditor({
                       disabled={disabled || draft.items.length === 1}
                       onClick={() => removeItem(index)}
                     >
-                      Remove
+                      移除
                     </button>
                   </td>
                 </tr>
@@ -425,7 +425,7 @@ export function InvoiceEditor({
           disabled={disabled}
           onClick={addItem}
         >
-          Add line
+          添加行
         </button>
       </div>
 

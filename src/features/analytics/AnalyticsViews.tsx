@@ -33,16 +33,16 @@ function SuggestionList({ suggestions, onSelect }: SuggestionListProps) {
           <span>
             <strong>{suggestion.displayName}</strong>
             <span className="suggestion-item__meta">
-              {suggestion.sampleCount} samples
+              {suggestion.sampleCount} 个样本
               {suggestion.variantCount > 1
-                ? ` · ${suggestion.variantCount} name variants`
+                ? ` · ${suggestion.variantCount} 个名称变体`
                 : ''}
             </span>
           </span>
           <span className="badge badge-info">
             {suggestion.lastPurchasedAt
               ? formatFullDate(suggestion.lastPurchasedAt)
-              : 'No date'}
+              : '无日期'}
           </span>
         </button>
       ))}
@@ -57,36 +57,36 @@ export function DashboardOverview({
 }) {
   const metricCards = [
     {
-      label: 'Total spend',
+      label: '总支出',
       value: formatCurrency(metrics.totalSpend),
       copy:
         metrics.totalInvoiceCount > 0
-          ? `${metrics.totalInvoiceCount} invoices stored in D1.`
-          : 'No invoices imported yet.',
+          ? `D1 中已存储 ${metrics.totalInvoiceCount} 张发票。`
+          : '尚未导入发票。',
     },
     {
-      label: 'Active suppliers',
+      label: '活跃供应商',
       value: String(metrics.activeSuppliers),
       copy:
         metrics.activeSuppliers > 0
-          ? 'Suppliers with at least one imported invoice.'
-          : 'Supplier count will appear after the first import.',
+          ? '至少导入过一张发票的供应商。'
+          : '第一次导入后将显示供应商数量。',
     },
     {
-      label: `Invoices in ${metrics.recentWindowDays} days`,
+      label: `近 ${metrics.recentWindowDays} 天发票`,
       value: String(metrics.recentInvoiceCount),
       copy:
         metrics.latestInvoiceDate
-          ? `Latest import dated ${formatFullDate(metrics.latestInvoiceDate)}.`
-          : 'No recent activity yet.',
+          ? `最近导入时间为 ${formatFullDate(metrics.latestInvoiceDate)}。`
+          : '尚无最近活动。',
     },
     {
-      label: `Categories in ${metrics.recentWindowDays} days`,
+      label: `近 ${metrics.recentWindowDays} 天分类`,
       value: String(metrics.recentCategoryCount),
       copy:
         metrics.recentCategoryCount > 0
-          ? 'Distinct purchased categories in the current operating window.'
-          : 'Categories will populate after invoice lines are imported.',
+          ? '当前运营窗口已购买的不同分类数。'
+          : '导入发票行项后将显示分类数据。',
     },
   ] as const
 
@@ -104,31 +104,29 @@ export function DashboardOverview({
 
       <section className="content-grid">
         <article className="surface-panel section-card">
-          <p className="eyebrow">Live operating view</p>
-          <h3 className="section-heading">What the dashboard now tracks</h3>
+          <p className="eyebrow">实时运营视图</p>
+          <h3 className="section-heading">仪表盘当前追踪内容</h3>
           <ul className="stack-list" style={{ marginTop: '1rem' }}>
             <li className="stack-item">
-              <span>Imported invoices</span>
+              <span>已导入发票</span>
               <span className="stack-item__value">{metrics.totalInvoiceCount}</span>
             </li>
             <li className="stack-item">
-              <span>Suppliers with activity</span>
+              <span>有活动的供应商</span>
               <span className="stack-item__value">{metrics.activeSuppliers}</span>
             </li>
             <li className="stack-item">
-              <span>Recent category coverage</span>
+              <span>近期分类覆盖</span>
               <span className="stack-item__value">{metrics.recentCategoryCount}</span>
             </li>
           </ul>
         </article>
 
         <article className="surface-panel section-card surface-muted">
-          <p className="eyebrow">Phase 3</p>
-          <h3 className="section-heading">Analysis layer is live</h3>
+          <p className="eyebrow">分析层</p>
+          <h3 className="section-heading">分析功能已上线</h3>
           <p className="section-copy">
-            Dashboard, product trends, and supplier comparisons now read from
-            the same D1 invoice line data. Empty databases fall back to neutral
-            copy instead of placeholder metrics.
+            仪表盘、商品趋势和供应商比价现在读取相同的 D1 发票行数据。空数据库将显示中性文案而非占位指标。
           </p>
         </article>
       </section>
@@ -163,14 +161,12 @@ export function AnalyticsPageContent({
   return (
     <>
       <section className="surface-panel hero-panel">
-        <p className="eyebrow">Price intelligence</p>
+        <p className="eyebrow">价格情报</p>
         <h2 className="page-title">
-          Search a product and read its monthly purchase trend from D1.
+          搜索商品并从 D1 读取其月度采购趋势
         </h2>
         <p className="page-copy">
-          Product search uses normalized invoice item names, monthly aggregates
-          calculate average, min, max, quantity, and sample count, and mixed
-          units are blocked until the user selects one unit explicitly.
+          商品搜索使用归一化的发票行项名，月度聚合计算平均、最低、最高价、采购量和样本数，混合单位时需用户明确选择一个单位。
         </p>
       </section>
 
@@ -178,7 +174,7 @@ export function AnalyticsPageContent({
         <article className="surface-panel section-card">
           <div className="two-column-grid">
             <div className="field">
-              <label htmlFor="product-search">Product search</label>
+              <label htmlFor="product-search">商品搜索</label>
               <input
                 id="product-search"
                 className="text-input"
@@ -189,16 +185,16 @@ export function AnalyticsPageContent({
             </div>
 
             <div className="field">
-              <label htmlFor="analytics-window">Window</label>
+              <label htmlFor="analytics-window">时间窗口</label>
               <select
                 id="analytics-window"
                 className="select-input"
                 value={months}
                 onChange={(event) => onMonthsChange(event.target.value)}
               >
-                <option value="3">Last 3 months</option>
-                <option value="6">Last 6 months</option>
-                <option value="12">Last 12 months</option>
+                <option value="3">近 3 个月</option>
+                <option value="6">近 6 个月</option>
+                <option value="12">近 12 个月</option>
               </select>
             </div>
           </div>
@@ -209,21 +205,21 @@ export function AnalyticsPageContent({
             <>
               <div className="section-card__header" style={{ marginTop: '1.25rem' }}>
                 <div>
-                  <p className="eyebrow">Selected product</p>
+                  <p className="eyebrow">已选商品</p>
                   <h3 className="section-heading">{data.selectedProduct.displayName}</h3>
                   <p className="section-copy">
-                    {data.selectedProduct.totalSamples} samples · last purchased{' '}
+                    {data.selectedProduct.totalSamples} 个样本 · 最近采购于{' '}
                     {data.selectedProduct.lastPurchasedAt
                       ? formatFullDate(data.selectedProduct.lastPurchasedAt)
-                      : 'without a dated sample'}
+                      : '无日期样本'}
                   </p>
                 </div>
                 {data.selectedProduct.selectedUnit ? (
                   <span className="badge badge-success">
-                    Unit: {data.selectedProduct.selectedUnit}
+                    单位：{data.selectedProduct.selectedUnit}
                   </span>
                 ) : (
-                  <span className="badge badge-warning">Pick a unit</span>
+                  <span className="badge badge-warning">选择单位</span>
                 )}
               </div>
 
@@ -272,23 +268,23 @@ export function AnalyticsPageContent({
                 </div>
               ) : (
                 <EmptyStateCard
-                  title="No samples in the selected window"
-                  copy="Keep the product selected and widen the window, or import more invoices for this item."
+                  title="所选窗口无样本"
+                  copy="保持选中商品并扩大窗口范围，或导入更多该商品的发票。"
                 />
               )}
             </>
           ) : (
             <EmptyStateCard
               icon="3"
-              title="Choose a product to start"
-              copy="Type at least two characters to fetch indexed product suggestions."
+              title="选择一个商品开始"
+              copy="输入至少两个字符以获取已索引的商品建议。"
             />
           )}
         </article>
 
         <article className="surface-panel section-card surface-muted">
-          <p className="eyebrow">Trend outputs</p>
-          <h3 className="section-heading">Monthly aggregates</h3>
+          <p className="eyebrow">趋势输出</p>
+          <h3 className="section-heading">月度汇总</h3>
           {data.trend.length > 0 ? (
             <ul className="stack-list" style={{ marginTop: '1rem' }}>
               {data.trend.map((point) => (
@@ -302,25 +298,24 @@ export function AnalyticsPageContent({
             </ul>
           ) : (
             <p className="section-copy">
-              Average, minimum, maximum, total quantity, and observation count
-              will appear once a product and compatible unit are selected.
+              选择商品和兼容单位后，将显示平均、最低、最高价、总采购量和观测次数。
             </p>
           )}
 
           {data.selectedProduct?.selectedUnit && data.trend.length > 0 ? (
             <ul className="stack-list" style={{ marginTop: '1rem' }}>
               <li className="stack-item">
-                <span>Tracked unit</span>
+                <span>追踪单位</span>
                 <span className="stack-item__value">{data.selectedProduct.selectedUnit}</span>
               </li>
               <li className="stack-item">
-                <span>Total samples</span>
+                <span>总样本数</span>
                 <span className="stack-item__value">
                   {data.trend.reduce((sum, point) => sum + point.sampleCount, 0)}
                 </span>
               </li>
               <li className="stack-item">
-                <span>Total quantity</span>
+                <span>总采购量</span>
                 <span className="stack-item__value">
                   {data.trend
                     .reduce((sum, point) => sum + point.totalQuantity, 0)
@@ -357,14 +352,12 @@ export function ComparePageContent({
   return (
     <>
       <section className="surface-panel hero-panel">
-        <p className="eyebrow">Supplier benchmark</p>
+        <p className="eyebrow">供应商比价</p>
         <h2 className="page-title">
-          Rank each supplier by its latest observed price for the same product.
+          按同一商品的最新观测价格对供应商进行排名。
         </h2>
         <p className="page-copy">
-          The comparison matrix keeps only each supplier&apos;s latest sample per
-          product and unit, then ranks the current offers from cheapest to most
-          expensive.
+          比价矩阵仅为您保留每家供应商针对每个商品及单位的最新样本，并将当前报价从低到高进行排名。
         </p>
       </section>
 
@@ -372,27 +365,27 @@ export function ComparePageContent({
         <article className="surface-panel section-card">
           <div className="two-column-grid">
             <div className="field">
-              <label htmlFor="compare-search">Search product</label>
+              <label htmlFor="compare-search">搜索商品</label>
               <input
                 id="compare-search"
                 className="text-input"
-                placeholder="Aceite, cerveza, pollo..."
+                placeholder="橄榄油，啤酒，鸡肉..."
                 value={query}
                 onChange={(event) => onQueryChange(event.target.value)}
               />
             </div>
 
             <div className="field">
-              <label htmlFor="compare-sort">Sort rows</label>
+              <label htmlFor="compare-sort">排序列</label>
               <select
                 id="compare-sort"
                 className="select-input"
                 value={sort}
                 onChange={(event) => onSortChange(event.target.value)}
               >
-                <option value="best-price">Best price</option>
-                <option value="supplier-count">Supplier count</option>
-                <option value="recent">Most recent</option>
+                <option value="best-price">最低价格</option>
+                <option value="supplier-count">供应商数量</option>
+                <option value="recent">最近更新</option>
               </select>
             </div>
           </div>
@@ -409,18 +402,18 @@ export function ComparePageContent({
                         {row.displayName}
                       </h3>
                       <p className="section-copy">
-                        Latest known prices in {row.unit}
+                        {row.unit} 的最新已知价格
                         {row.lastObservedAt
-                          ? ` · last sample ${formatFullDate(row.lastObservedAt)}`
+                          ? ` · 最新样本 ${formatFullDate(row.lastObservedAt)}`
                           : ''}
                       </p>
                     </div>
                     <div className="pill-row">
                       <span className="badge badge-success">
-                        Best {formatCurrency(row.bestPrice)}
+                        最低 {formatCurrency(row.bestPrice)}
                       </span>
                       <span className="badge badge-info">
-                        {row.supplierCount} suppliers
+                        {row.supplierCount} 家供应商
                       </span>
                     </div>
                   </div>
@@ -436,7 +429,7 @@ export function ComparePageContent({
                             #{offer.priceRank} {offer.supplierName}
                           </strong>
                           <p className="muted" style={{ margin: '0.2rem 0 0' }}>
-                            Latest sample {formatFullDate(offer.itemDate)}
+                            最新样本 {formatFullDate(offer.itemDate)}
                           </p>
                         </div>
                         <span
@@ -454,26 +447,26 @@ export function ComparePageContent({
             </div>
           ) : (
             <EmptyStateCard
-              title="No comparison rows match the filter"
-              copy="Search for a product with at least two supplier samples, or import more invoices to create a benchmark."
+              title="没有找到匹配的比价数据"
+              copy="请搜索具有至少两个供应商样本的商品，或导入更多发票以建立比价基准。"
             />
           )}
         </article>
 
         <article className="surface-panel section-card surface-muted">
-          <p className="eyebrow">Current window</p>
-          <h3 className="section-heading">Comparison summary</h3>
+          <p className="eyebrow">当前窗口</p>
+          <h3 className="section-heading">比价汇总</h3>
           <ul className="stack-list" style={{ marginTop: '1rem' }}>
             <li className="stack-item">
-              <span>Visible products</span>
+              <span>可见商品数</span>
               <span className="stack-item__value">{data.rows.length}</span>
             </li>
             <li className="stack-item">
-              <span>Total ranked rows</span>
+              <span>总行数</span>
               <span className="stack-item__value">{data.totalRows}</span>
             </li>
             <li className="stack-item">
-              <span>Page</span>
+              <span>当前页</span>
               <span className="stack-item__value">
                 {data.page} / {data.totalPages}
               </span>
@@ -487,7 +480,7 @@ export function ComparePageContent({
               disabled={data.page <= 1}
               onClick={() => onPageChange(data.page - 1)}
             >
-              Previous
+              上一页
             </button>
             <button
               type="button"
@@ -495,7 +488,7 @@ export function ComparePageContent({
               disabled={data.page >= data.totalPages}
               onClick={() => onPageChange(data.page + 1)}
             >
-              Next
+              下一页
             </button>
           </div>
         </article>

@@ -1,7 +1,5 @@
 import type { ReactNode } from 'react'
 import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { TanStackDevtools } from '@tanstack/react-devtools'
 import { AppHeader } from '../components/AppHeader'
 import { AppRuntime } from '../components/AppRuntime'
 import {
@@ -23,12 +21,12 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'Bescuit CostTracker',
+        title: 'Bescuit 成本追踪',
       },
       {
         name: 'description',
         content:
-          'Cloudflare-native purchasing tracker for bar-restaurante invoice costs, trends, and supplier comparisons.',
+          '基于 Cloudflare 的酒吧餐厅采购成本追踪、趋势分析与供应商比价平台',
       },
       {
         name: 'theme-color',
@@ -61,7 +59,7 @@ export const Route = createRootRoute({
 
 function RootDocument({ children }: { children: ReactNode }) {
   return (
-    <html lang="es">
+    <html lang="zh-CN">
       <head>
         <HeadContent />
       </head>
@@ -70,17 +68,6 @@ function RootDocument({ children }: { children: ReactNode }) {
         <AppRuntime />
         <main className="app-shell app-main">{children}</main>
         <BottomNav />
-        <TanStackDevtools
-          config={{
-            position: 'bottom-right',
-          }}
-          plugins={[
-            {
-              name: 'Tanstack Router',
-              render: <TanStackRouterDevtoolsPanel />,
-            },
-          ]}
-        />
         <Scripts />
       </body>
     </html>

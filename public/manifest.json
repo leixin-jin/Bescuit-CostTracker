@@ -1,9 +1,9 @@
 {
   "id": "/",
-  "lang": "es",
+  "lang": "zh-CN",
   "short_name": "CostTracker",
   "name": "Bescuit CostTracker",
-  "description": "Cloudflare-native purchasing tracker for invoice imports, supplier comparison, and price analytics.",
+  "description": "基于 Cloudflare 的酒吧餐厅采购追踪、趋势分析和账单比价平台",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

@@ -12,7 +12,7 @@ function getErrorMessage(error: unknown) {
     return error
   }
 
-  return 'The last request did not complete. Retry the action or check the release logs.'
+  return '上次请求未完成。请重试操作或查看发布日志。'
 }
 
 export function PageNotice({
@@ -67,13 +67,13 @@ export function RoutePendingState() {
   return (
     <div className="page-shell page-fade">
       <PageNotice
-        eyebrow="Loading workspace"
-        title="Syncing the latest invoice data."
-        copy="Bescuit CostTracker is fetching D1-backed data for this route. The current view will appear as soon as the request settles."
+        eyebrow="正在加载"
+        title="正在同步最新的发票数据"
+        copy="Bescuit 成本追踪正在从 D1 获取本路由所需的数据，加载完成后即显示当前视图。"
         actions={
           <div className="loading-inline" aria-live="polite">
             <span className="loading-dot" />
-            <span>Refreshing page state…</span>
+            <span>正在刷新页面状态…</span>
           </div>
         }
       />
@@ -87,25 +87,25 @@ export function RouteErrorState({ error, reset }: ErrorComponentProps) {
   return (
     <div className="page-shell page-fade">
       <PageNotice
-        eyebrow="Request failed"
-        title="This screen could not be loaded."
+        eyebrow="请求失败"
+        title="无法加载此页面"
         copy={getErrorMessage(error)}
         actions={
           <>
             {safeReset ? (
               <button type="button" className="button" onClick={() => safeReset()}>
-                Retry request
+                重试请求
               </button>
             ) : null}
             <Link to="/" className="button button-secondary" activeOptions={{ exact: true }}>
-              Open dashboard
+              打开仪表盘
             </Link>
             <Link
               to="/invoices"
               search={defaultInvoiceSearch}
               className="button button-secondary"
             >
-              Open invoices
+              打开发票列表
             </Link>
           </>
         }
@@ -118,20 +118,20 @@ export function RouteNotFoundState() {
   return (
     <div className="page-shell page-fade">
       <PageNotice
-        eyebrow="Not found"
-        title="The requested page does not exist."
-        copy="The link may be stale, or the route may no longer be part of the current release."
+        eyebrow="未找到"
+        title="请求的页面不存在"
+        copy="链接可能已过期，或该路由已不在当前发布版本中。"
         actions={
           <>
             <Link to="/" className="button" activeOptions={{ exact: true }}>
-              Open dashboard
+              打开仪表盘
             </Link>
             <Link
               to="/invoices"
               search={defaultInvoiceSearch}
               className="button button-secondary"
             >
-              Review invoices
+              查看发票
             </Link>
           </>
         }

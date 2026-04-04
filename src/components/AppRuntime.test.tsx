@@ -19,8 +19,8 @@ describe('AppRuntime', () => {
 
     render(<AppRuntime />)
 
-    expect(screen.getByText('Offline mode is active.')).toBeTruthy()
-    expect(screen.getByText(/cached pages remain available/i)).toBeTruthy()
+    expect(screen.getByText('当前处于离线模式')).toBeTruthy()
+    expect(screen.getByText(/已缓存的页面仍可访问/i)).toBeTruthy()
   })
 
   it('clears stale offline feedback when the page is shown again online', async () => {
@@ -28,13 +28,13 @@ describe('AppRuntime', () => {
 
     render(<AppRuntime />)
 
-    expect(screen.getByText('Offline mode is active.')).toBeTruthy()
+    expect(screen.getByText('当前处于离线模式')).toBeTruthy()
 
     setOnlineStatus(true)
     window.dispatchEvent(new Event('pageshow'))
 
     await waitFor(() => {
-      expect(screen.queryByText('Offline mode is active.')).toBeNull()
+      expect(screen.queryByText('当前处于离线模式')).toBeNull()
     })
   })
 
@@ -63,7 +63,7 @@ describe('AppRuntime', () => {
     window.dispatchEvent(event)
 
     const installButton = await screen.findByRole('button', {
-      name: 'Install app',
+      name: '安装应用',
     })
 
     fireEvent.click(installButton)

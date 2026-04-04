@@ -53,7 +53,7 @@ export function UploadWorkflow({
       setIssues([
         {
           path: 'form',
-          message: 'Parse and review the invoice before saving.',
+          message: '请先解析并检查发票后再保存。',
         },
       ])
       return
@@ -81,7 +81,7 @@ export function UploadWorkflow({
       onSaved(result.invoiceId)
     } catch (error) {
       setSaveError(
-        error instanceof Error ? error.message : 'Invoice could not be saved.',
+        error instanceof Error ? error.message : '发票保存失败。',
       )
     } finally {
       setIsSaving(false)
@@ -91,19 +91,17 @@ export function UploadWorkflow({
   return (
     <div className="page-shell page-fade">
       <section className="surface-panel hero-panel">
-        <p className="eyebrow">Phase 2 importer</p>
-        <h2 className="page-title">Paste, validate, correct, and save invoices.</h2>
+        <p className="eyebrow">发票导入器</p>
+        <h2 className="page-title">粘贴、验证、修正并保存发票</h2>
         <p className="page-copy">
-          The preview uses the same normalized invoice contract that the save
-          flow persists into D1. Category mismatches fall back automatically and
-          warnings stay visible before commit.
+          预览使用与保存流程相同的归一化发票格式写入 D1。分类不匹配时自动回退，提交前警告保持可见。
         </p>
       </section>
 
       <section className="route-grid">
         <article className="surface-panel section-card">
           <div className="field">
-            <label htmlFor="json-paste">Invoice JSON</label>
+            <label htmlFor="json-paste">发票 JSON</label>
             <textarea
               id="json-paste"
               className="text-area"
@@ -114,16 +112,16 @@ export function UploadWorkflow({
 
           <div className="action-row" style={{ marginTop: '1rem' }}>
             <button type="button" className="button button-secondary" onClick={() => setJsonInput(sampleInvoiceJson)}>
-              Load sample
+              加载示例
             </button>
             <button type="button" className="button" onClick={handleParse}>
-              Parse preview
+              解析预览
             </button>
           </div>
 
           {issues.length > 0 ? (
             <div className="feedback-block feedback-block--danger">
-              <p className="feedback-title">Validation errors</p>
+              <p className="feedback-title">验证错误</p>
               <ul className="feedback-list">
                 {issues.map((issue) => (
                   <li key={`${issue.path}-${issue.message}`}>
@@ -140,7 +138,7 @@ export function UploadWorkflow({
         </article>
 
         <article className="surface-panel section-card surface-muted">
-          <p className="eyebrow">Preview status</p>
+          <p className="eyebrow">预览状态</p>
           {draft ? (
             <>
               <h3 className="section-heading">
@@ -148,23 +146,21 @@ export function UploadWorkflow({
                 {draft.invoiceNumber ? ` · ${draft.invoiceNumber}` : ''}
               </h3>
               <p className="section-copy">
-                Review the normalized payload, correct any field inline, then
-                persist it as a draft invoice.
+                检查归一化后的数据，逐字段修正，然后保存为草稿发票。
               </p>
             </>
           ) : (
             <>
-              <h3 className="section-heading">Waiting for a valid parse</h3>
+              <h3 className="section-heading">等待有效的解析结果</h3>
               <p className="section-copy">
-                Paste the Gemini JSON and run the preview to unlock inline
-                corrections.
+                粘贴 Gemini JSON 并运行预览，以解锁逐行修正功能。
               </p>
             </>
           )}
 
           {warnings.length > 0 ? (
             <div className="feedback-block feedback-block--warning">
-              <p className="feedback-title">Normalization warnings</p>
+              <p className="feedback-title">归一化警告</p>
               <ul className="feedback-list">
                 {warnings.map((warning) => (
                   <li key={warning}>{warning}</li>
@@ -174,9 +170,9 @@ export function UploadWorkflow({
           ) : null}
 
           <div className="pill-row" style={{ marginTop: '1rem' }}>
-            <span className="badge badge-info">{categories.length} categories ready</span>
-            <span className="badge badge-success">Auto-create supplier</span>
-            <span className="badge badge-warning">Saves as draft</span>
+            <span className="badge badge-info">{categories.length} 个分类就绪</span>
+            <span className="badge badge-success">自动创建供应商</span>
+            <span className="badge badge-warning">保存为草稿</span>
           </div>
         </article>
       </section>
@@ -185,8 +181,8 @@ export function UploadWorkflow({
         <section className="surface-panel section-card">
           <div className="section-card__header">
             <div>
-              <p className="eyebrow">Editable preview</p>
-              <h3 className="section-heading">Finalize invoice fields</h3>
+              <p className="eyebrow">可编辑预览</p>
+              <h3 className="section-heading">完善发票字段</h3>
             </div>
             <div className="action-row">
               <button
@@ -195,14 +191,14 @@ export function UploadWorkflow({
                 disabled={isSaving}
                 onClick={() => void handleSave()}
               >
-                {isSaving ? 'Saving…' : 'Save invoice'}
+                {isSaving ? '保存中…' : '保存发票'}
               </button>
               <Link
                 to="/invoices"
                 search={defaultInvoiceSearch}
                 className="button button-secondary"
               >
-                Open registry
+                打开登记簿
               </Link>
             </div>
           </div>
@@ -219,8 +215,8 @@ export function UploadWorkflow({
         <section className="surface-panel section-card surface-muted">
           <EmptyStateCard
             icon="1"
-            title="Invoice preview will appear here"
-            copy="Load the sample payload or paste a supplier JSON document, then run Parse preview to review the normalized draft."
+            title="发票预览将在此处显示"
+            copy="加载示例数据或粘贴供应商 JSON 文档，然后点击“解析预览”查看归一化后的草稿。"
           />
         </section>
       )}
