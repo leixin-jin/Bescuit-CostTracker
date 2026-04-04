@@ -667,7 +667,8 @@ select:focus-visible {
 }
 
 .field-floating input,
-.field-floating textarea {
+.field-floating textarea,
+.field-floating select {
   padding-top: 1.6rem;
   padding-bottom: 0.2rem;
 }
@@ -675,7 +676,8 @@ select:focus-visible {
 .field-floating input:focus + label,
 .field-floating input:not(:placeholder-shown) + label,
 .field-floating textarea:focus + label,
-.field-floating textarea:not(:placeholder-shown) + label {
+.field-floating textarea:not(:placeholder-shown) + label,
+.field-floating select + label {
   transform: translateY(-8px) scale(0.75);
   color: var(--primary);
 }
