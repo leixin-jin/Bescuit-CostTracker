@@ -4,6 +4,15 @@ import type {
   DashboardMetrics,
   ProductSuggestion,
 } from './analytics.server'
+import { motion } from 'framer-motion'
+import {
+  Area,
+  AreaChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts'
 import { EmptyStateCard } from '../../components/AppStates'
 import {
   formatCurrency,
@@ -50,6 +59,18 @@ function SuggestionList({ suggestions, onSelect }: SuggestionListProps) {
   )
 }
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+}
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  show: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 300, damping: 24 } }
+}
+
 export function DashboardOverview({
   metrics,
 }: {
@@ -92,18 +113,28 @@ export function DashboardOverview({
 
   return (
     <>
-      <section className="metrics-grid">
+      <motion.section 
+        className="metrics-grid"
+        variants={containerVariants}
+        initial="hidden"
+        animate="show"
+      >
         {metricCards.map((metric) => (
-          <article key={metric.label} className="surface-panel metric-card">
+          <motion.article key={metric.label} className="surface-panel metric-card" variants={itemVariants}>
             <p className="metric-label">{metric.label}</p>
             <p className="metric-value metric-value--compact">{metric.value}</p>
             <p className="metric-copy">{metric.copy}</p>
-          </article>
+          </motion.article>
         ))}
-      </section>
+      </motion.section>
 
-      <section className="content-grid">
-        <article className="surface-panel section-card">
+      <motion.section 
+        className="content-grid"
+        variants={containerVariants}
+        initial="hidden"
+        animate="show"
+      >
+        <motion.article className="surface-panel section-card" variants={itemVariants}>
           <p className="eyebrow">实时运营视图</p>
           <h3 className="section-heading">仪表盘当前追踪内容</h3>
           <ul className="stack-list" style={{ marginTop: '1rem' }}>
@@ -120,16 +151,16 @@ export function DashboardOverview({
               <span className="stack-item__value">{metrics.recentCategoryCount}</span>
             </li>
           </ul>
-        </article>
+        </motion.article>
 
-        <article className="surface-panel section-card surface-muted">
+        <motion.article className="surface-panel section-card surface-muted" variants={itemVariants}>
           <p className="eyebrow">分析层</p>
           <h3 className="section-heading">分析功能已上线</h3>
           <p className="section-copy">
             仪表盘、商品趋势和供应商比价现在读取相同的 D1 发票行数据。空数据库将显示中性文案而非占位指标。
           </p>
-        </article>
-      </section>
+        </motion.article>
+      </motion.section>
     </>
   )
 }
@@ -153,11 +184,6 @@ export function AnalyticsPageContent({
   onSelectProduct,
   onSelectUnit,
 }: AnalyticsPageContentProps) {
-  const maxAverage = Math.max(
-    ...data.trend.map((point) => point.averageUnitPrice),
-    1,
-  )
-
   return (
     <>
       <section className="surface-panel hero-panel">
@@ -173,19 +199,18 @@ export function AnalyticsPageContent({
       <section className="route-grid">
         <article className="surface-panel section-card">
           <div className="two-column-grid">
-            <div className="field">
-              <label htmlFor="product-search">商品搜索</label>
+            <div className="field-floating">
               <input
                 id="product-search"
                 className="text-input"
-                placeholder="Aceite de oliva virgen extra 5L"
+                placeholder=" "
                 value={query}
                 onChange={(event) => onQueryChange(event.target.value)}
               />
+              <label htmlFor="product-search">商品搜索</label>
             </div>
 
-            <div className="field">
-              <label htmlFor="analytics-window">时间窗口</label>
+            <div className="field-floating">
               <select
                 id="analytics-window"
                 className="select-input"
@@ -196,6 +221,7 @@ export function AnalyticsPageContent({
                 <option value="6">近 6 个月</option>
                 <option value="12">近 12 个月</option>
               </select>
+              <label htmlFor="analytics-window">时间窗口</label>
             </div>
           </div>
 
@@ -245,27 +271,36 @@ export function AnalyticsPageContent({
               ) : null}
 
               {data.trend.length > 0 ? (
-                <div className="chart-shell" style={{ marginTop: '1.4rem' }}>
-                  {data.trend.map((point) => (
-                    <div key={point.month} className="chart-bar">
-                      <span className="chart-bar__value">
-                        {formatCurrency(point.averageUnitPrice)}
-                      </span>
-                      <div
-                        className="chart-bar__column"
-                        style={{
-                          height: `${Math.max(
-                            18,
-                            Math.round((point.averageUnitPrice / maxAverage) * 100),
-                          )}%`,
-                        }}
+                <motion.div 
+                  className="chart-shell" 
+                  style={{ marginTop: '1.4rem', height: 320, display: 'block' }}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart
+                      data={data.trend.map(p => ({ ...p, monthLabel: formatMonthLabel(p.month) }))}
+                      margin={{ top: 10, right: 0, left: -20, bottom: 0 }}
+                    >
+                      <defs>
+                        <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.8}/>
+                          <stop offset="95%" stopColor="var(--primary)" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <XAxis dataKey="monthLabel" axisLine={false} tickLine={false} tick={{ fill: 'var(--text-muted)', fontSize: 12 }} />
+                      <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--text-muted)', fontSize: 12 }} tickFormatter={(value) => `€${value}`} />
+                      <Tooltip 
+                        cursor={{ stroke: 'var(--border)', strokeWidth: 1, strokeDasharray: '4 4' }}
+                        contentStyle={{ backgroundColor: 'var(--bg-card)', borderRadius: '12px', border: '1px solid var(--border)', backdropFilter: 'blur(12px)', boxShadow: 'var(--shadow-md)' }}
+                        itemStyle={{ color: 'var(--text-primary)', fontWeight: 'bold' }}
+                        formatter={(value: any) => [formatCurrency(value as number), '平均价格']}
                       />
-                      <span className="chart-bar__label">
-                        {formatMonthLabel(point.month)}
-                      </span>
-                    </div>
-                  ))}
-                </div>
+                      <Area type="monotone" dataKey="averageUnitPrice" name="平均价格" stroke="var(--primary)" strokeWidth={3} fillOpacity={1} fill="url(#colorPrice)" />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </motion.div>
               ) : (
                 <EmptyStateCard
                   title="所选窗口无样本"
@@ -364,19 +399,18 @@ export function ComparePageContent({
       <section className="route-grid">
         <article className="surface-panel section-card">
           <div className="two-column-grid">
-            <div className="field">
-              <label htmlFor="compare-search">搜索商品</label>
+            <div className="field-floating">
               <input
                 id="compare-search"
                 className="text-input"
-                placeholder="橄榄油，啤酒，鸡肉..."
+                placeholder=" "
                 value={query}
                 onChange={(event) => onQueryChange(event.target.value)}
               />
+              <label htmlFor="compare-search">搜索商品</label>
             </div>
 
-            <div className="field">
-              <label htmlFor="compare-sort">排序列</label>
+            <div className="field-floating">
               <select
                 id="compare-sort"
                 className="select-input"
@@ -387,6 +421,7 @@ export function ComparePageContent({
                 <option value="supplier-count">供应商数量</option>
                 <option value="recent">最近更新</option>
               </select>
+              <label htmlFor="compare-sort">排序列</label>
             </div>
           </div>
 

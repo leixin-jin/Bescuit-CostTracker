@@ -36,9 +36,11 @@
     "@tanstack/react-start": "latest",
     "@tanstack/router-plugin": "^1.132.0",
     "drizzle-orm": "^0.45.1",
+    "framer-motion": "^12.38.0",
     "lucide-react": "^0.545.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "recharts": "^3.8.1",
     "tailwindcss": "^4.1.18",
     "zod": "^4.3.6"
   },

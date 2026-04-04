@@ -6,14 +6,21 @@
 }
 
 :root {
-  --primary: #d67a3f;
-  --primary-light: #ebb58e;
-  --primary-dark: #b7612d;
+  /* HSL Base Variables */
+  --hue-primary: 24;
+  --sat-primary: 65%;
+  --lit-primary: 54%;
+  
+  --primary-hsl: var(--hue-primary) var(--sat-primary) var(--lit-primary);
+  --primary: hsl(var(--primary-hsl));
+  --primary-light: hsl(var(--hue-primary) 68% 74%);
+  --primary-dark: hsl(var(--hue-primary) 60% 45%);
   --secondary: #6e8fb2;
   --secondary-soft: #abc2d7;
   --success: #739777;
   --warning: #c79a57;
   --danger: #c56b5f;
+  
   --bg-base: #f6f1e8;
   --bg-card: rgba(255, 249, 241, 0.86);
   --bg-card-strong: rgba(255, 252, 247, 0.96);
@@ -30,6 +37,24 @@
   --radius-sm: 14px;
   --bottom-nav-height: 86px;
   --font-display: 'Fraunces', Georgia, serif;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-base: #121418;
+    --bg-card: rgba(26, 30, 36, 0.86);
+    --bg-card-strong: rgba(20, 24, 28, 0.96);
+    --bg-input: rgba(18, 20, 24, 0.98);
+    --text-primary: #ededed;
+    --text-secondary: #b0b5be;
+    --text-muted: #737c8a;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.14);
+    --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 12px 30px rgba(0, 0, 0, 0.3);
+    color-scheme: dark;
+  }
 }
 
 * {
@@ -43,33 +68,60 @@ body,
 }
 
 html {
-  color-scheme: light;
+  color-scheme: light dark;
 }
 
 body {
   margin: 0;
   color: var(--text-primary);
   font-family: var(--font-sans);
-  background:
-    radial-gradient(
-      circle at top left,
-      rgba(214, 122, 63, 0.14),
-      transparent 34%
-    ),
-    radial-gradient(
-      circle at top right,
-      rgba(110, 143, 178, 0.12),
-      transparent 28%
-    ),
-    radial-gradient(
-      circle at bottom center,
-      rgba(115, 151, 119, 0.08),
-      transparent 26%
-    ),
-    linear-gradient(180deg, #fbf7f1 0%, #f6f1e8 46%, #efe6d9 100%);
+  background: var(--bg-base);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background-image:
+    linear-gradient(rgba(104, 82, 58, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(104, 82, 58, 0.035) 1px, transparent 1px);
+  background-size: 36px 36px;
+  mask-image: radial-gradient(circle at top, black 15%, transparent 80%);
+}
+
+@media (prefers-color-scheme: dark) {
+  body::before {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  }
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    radial-gradient(circle at top left, rgba(214, 122, 63, 0.14), transparent 34%),
+    radial-gradient(circle at top right, rgba(110, 143, 178, 0.12), transparent 28%),
+    radial-gradient(circle at bottom center, rgba(115, 151, 119, 0.08), transparent 26%);
+  opacity: 0.85;
+}
+
+@media (prefers-color-scheme: dark) {
+  body::after {
+    background:
+      radial-gradient(circle at top left, rgba(214, 122, 63, 0.08), transparent 34%),
+      radial-gradient(circle at top right, rgba(110, 143, 178, 0.08), transparent 34%),
+      radial-gradient(circle at bottom right, rgba(197, 107, 95, 0.05), transparent 40%);
+  }
 }
 
 body::before {
@@ -130,6 +182,19 @@ button {
 button:disabled {
   cursor: not-allowed;
   opacity: 0.56;
+}
+
+/* Accessibility: Global Focus Visible Style */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline-offset: 1px;
 }
 
 ::selection {
@@ -583,6 +648,47 @@ button:disabled {
   min-height: 8rem;
 }
 
+/* Floating Label implementation logic */
+.field-floating {
+  position: relative;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.field-floating label {
+  position: absolute;
+  top: 15px;
+  left: 16px;
+  color: var(--text-muted);
+  font-size: 1rem;
+  transition: transform 0.2s ease, font-size 0.2s ease, color 0.2s ease;
+  transform-origin: left top;
+  pointer-events: none;
+}
+
+.field-floating input,
+.field-floating textarea {
+  padding-top: 1.6rem;
+  padding-bottom: 0.2rem;
+}
+
+.field-floating input:focus + label,
+.field-floating input:not(:placeholder-shown) + label,
+.field-floating textarea:focus + label,
+.field-floating textarea:not(:placeholder-shown) + label {
+  transform: translateY(-8px) scale(0.75);
+  color: var(--primary);
+}
+
+.text-input:focus,
+.text-area:focus,
+.select-input:focus {
+  outline: none;
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 4px rgba(var(--hue-primary), 65%, 54%, 0.15); /* Focus Glow */
+  background: var(--bg-card-strong);
+}
+
 .code-preview {
   min-height: 21rem;
   max-height: 30rem;
@@ -671,6 +777,7 @@ button:disabled {
 .is-invalid {
   border-color: rgba(197, 107, 95, 0.44);
   box-shadow: 0 0 0 3px rgba(197, 107, 95, 0.12);
+  animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
 }
 
 .table-shell {
@@ -998,6 +1105,24 @@ button:disabled {
   50% {
     transform: scale(1.1);
     opacity: 1;
+  }
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
   }
 }
 

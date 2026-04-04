@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { type ReactNode, isValidElement, cloneElement } from 'react'
 import { cn, formatCurrency } from '../../lib/utils'
 import {
   calculateInvoiceTotal,
@@ -94,7 +94,7 @@ export function InvoiceEditor({
   return (
     <div className="field-grid">
       <div className="two-column-grid">
-        <Field
+        <FloatingField
           error={issuesByPath.supplierName?.[0]}
           label="供应商"
           htmlFor="supplier-name"
@@ -106,9 +106,9 @@ export function InvoiceEditor({
             value={draft.supplierName}
             onChange={(event) => updateDraft('supplierName', event.target.value)}
           />
-        </Field>
+        </FloatingField>
 
-        <Field
+        <FloatingField
           error={issuesByPath.invoiceDate?.[0]}
           label="发票日期"
           htmlFor="invoice-date"
@@ -121,9 +121,9 @@ export function InvoiceEditor({
             value={draft.invoiceDate}
             onChange={(event) => updateDraft('invoiceDate', event.target.value)}
           />
-        </Field>
+        </FloatingField>
 
-        <Field
+        <FloatingField
           error={issuesByPath.invoiceNumber?.[0]}
           label="发票编号"
           htmlFor="invoice-number"
@@ -136,9 +136,9 @@ export function InvoiceEditor({
             value={draft.invoiceNumber}
             onChange={(event) => updateDraft('invoiceNumber', event.target.value)}
           />
-        </Field>
+        </FloatingField>
 
-        <Field
+        <FloatingField
           error={issuesByPath.status?.[0]}
           label="状态"
           htmlFor="invoice-status"
@@ -155,9 +155,9 @@ export function InvoiceEditor({
             <option value="draft">草稿</option>
             <option value="verified">已审核</option>
           </select>
-        </Field>
+        </FloatingField>
 
-        <Field
+        <FloatingField
           error={issuesByPath.supplierContact?.[0]}
           label="供应商联系方式"
           htmlFor="supplier-contact"
@@ -175,7 +175,7 @@ export function InvoiceEditor({
               updateDraft('supplierContact', event.target.value)
             }
           />
-        </Field>
+        </FloatingField>
 
         <Field
           error={issuesByPath.totalAmount?.[0]}
@@ -210,7 +210,7 @@ export function InvoiceEditor({
         </Field>
       </div>
 
-      <Field
+      <FloatingField
         error={issuesByPath.supplierNotes?.[0]}
         label="供应商备注"
         htmlFor="supplier-notes"
@@ -226,9 +226,9 @@ export function InvoiceEditor({
           value={draft.supplierNotes}
           onChange={(event) => updateDraft('supplierNotes', event.target.value)}
         />
-      </Field>
+      </FloatingField>
 
-      <Field error={issuesByPath.notes?.[0]} label="发票备注" htmlFor="invoice-notes">
+      <FloatingField error={issuesByPath.notes?.[0]} label="发票备注" htmlFor="invoice-notes">
         <textarea
           id="invoice-notes"
           className={cn(
@@ -240,7 +240,7 @@ export function InvoiceEditor({
           value={draft.notes}
           onChange={(event) => updateDraft('notes', event.target.value)}
         />
-      </Field>
+      </FloatingField>
 
       <div className="summary-grid">
         <article className="surface-panel section-card surface-muted">
@@ -453,6 +453,30 @@ function Field({
     <div className="field">
       <label htmlFor={htmlFor}>{label}</label>
       {children}
+      <FieldError message={error} />
+    </div>
+  )
+}
+
+function FloatingField({
+  children,
+  error,
+  htmlFor,
+  label,
+}: {
+  children: ReactNode
+  error?: string
+  htmlFor: string
+  label: string
+}) {
+  const child = isValidElement(children) ? cloneElement(children as any, { placeholder: ' ' }) : children;
+  
+  return (
+    <div>
+      <div className="field-floating">
+        {child}
+        <label htmlFor={htmlFor}>{label}</label>
+      </div>
       <FieldError message={error} />
     </div>
   )
