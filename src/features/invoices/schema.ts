@@ -20,7 +20,7 @@ export const invoiceSearchSchema = z.object({
   query: z
     .preprocess(
       (value) => (typeof value === 'string' ? value : ''),
-      z.string().trim(),
+      z.string(),
     )
     .catch(''),
   status: z

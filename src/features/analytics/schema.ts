@@ -1,15 +1,15 @@
 import { z } from 'zod'
 
-const trimmedText = z
-  .preprocess((value) => (typeof value === 'string' ? value : ''), z.string().trim())
+const searchText = z
+  .preprocess((value) => (typeof value === 'string' ? value : ''), z.string())
   .catch('')
 
 export const analyticsWindowSchema = z.enum(['3', '6', '12']).catch('6')
 
 export const analyticsSearchSchema = z.object({
-  query: trimmedText,
-  product: trimmedText,
-  unit: trimmedText,
+  query: searchText,
+  product: searchText,
+  unit: searchText,
   months: analyticsWindowSchema,
 })
 
@@ -20,8 +20,8 @@ export const compareSortSchema = z.enum([
 ])
 
 export const compareSearchSchema = z.object({
-  query: trimmedText,
-  product: trimmedText,
+  query: searchText,
+  product: searchText,
   sort: z
     .preprocess(
       (value) => (typeof value === 'string' ? value : 'best-price'),
